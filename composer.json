@@ -1,0 +1,34 @@
+{
+    "name": "RS/di-extra-bundle",
+    "description": "Allows to configure dependency injection using annotations",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ricky Su",
+            "email": "ricky@ez2.us"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "RS\\DiExtraBundle\\": "" }
+    },
+    "require": {
+        "php": "^7.1.3",
+        "symfony/yaml": "~4.0",
+        "symfony/finder": "~4.0",
+        "symfony/filesystem": "~4.0",
+        "symfony/dependency-injection": "~4.0",
+        "symfony/config": "~4.0"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": "~4.0",
+        "symfony/phpunit-bridge": "~4.0",
+        "phpunit/phpunit": "^5.4.4"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
+    }
+}
