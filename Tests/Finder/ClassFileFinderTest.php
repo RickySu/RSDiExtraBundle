@@ -1,18 +1,18 @@
 <?php
 namespace RS\DiExtraBundle\Tests\Finder;
 
-use RS\DiExtraBundle\Finder\ClassFinder;
+use RS\DiExtraBundle\Finder\ClassFileFinder;
 use RS\DiExtraBundle\Tests\BaseTestCase;
 
-class ClassFinderTest extends BaseTestCase
+class ClassFileFinderTest extends BaseTestCase
 {
-    public function test_ClassFinder__construct_default()
+    public function test_ClassFileFinder__construct_default()
     {
         //arrange
         $dir = 'dir';
 
         //act
-        $finder = new ClassFinder($dir);
+        $finder = new ClassFileFinder($dir);
 
         //assert
         $this->assertEquals($dir, $this->getObjectAttribute($finder, 'dir'));
@@ -20,7 +20,7 @@ class ClassFinderTest extends BaseTestCase
         $this->assertEquals('*.php', $this->getObjectAttribute($finder, 'pathnamePattern'));
     }
 
-    public function test_ClassFinder__construct_with_parameters()
+    public function test_ClassFileFinder__construct_with_parameters()
     {
         //arrange
         $dir = 'dir';
@@ -28,7 +28,7 @@ class ClassFinderTest extends BaseTestCase
         $pathnamePattern = 'bar';
 
         //act
-        $finder = new ClassFinder($dir, $pattern, $pathnamePattern);
+        $finder = new ClassFileFinder($dir, $pattern, $pathnamePattern);
 
         //assert
         $this->assertEquals($dir, $this->getObjectAttribute($finder, 'dir'));
@@ -36,11 +36,11 @@ class ClassFinderTest extends BaseTestCase
         $this->assertEquals($pathnamePattern, $this->getObjectAttribute($finder, 'pathnamePattern'));
     }
 
-    public function test_ClassFinder_find_EmptyDir()
+    public function test_ClassFileFinder_find_EmptyDir()
     {
         //arrange
         $dir = __DIR__."/../Fixtures/EmptyDir";
-        $classFinder = new ClassFinder($dir);
+        $classFinder = new ClassFileFinder($dir);
 
         //act
         $result = $classFinder->find();
@@ -49,7 +49,7 @@ class ClassFinderTest extends BaseTestCase
         $this->assertCount(0, $result);
     }
 
-    public function test_ClassFinder_find_Foo()
+    public function test_ClassFileFinder_find_Foo()
     {
         //arrange
         $expected = array(
@@ -61,17 +61,17 @@ class ClassFinderTest extends BaseTestCase
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar2.php"),
         );
         $dir = __DIR__."/../Fixtures/Foo";
-        $classFinder = new ClassFinder($dir);
+        $classFinder = new ClassFileFinder($dir);
 
         //act
-        $result = iterator_to_array($classFinder->find());
+        $result = iterator_to_array($classFinder->find(), false);
         sort($result);
 
         //assert
         $this->assertEquals($expected, $result);
     }
 
-    public function test_ClassFinder_find_Foo_regx()
+    public function test_ClassFileFinder_find_Foo_regx()
     {
         //arrange
         $expected = array(
@@ -80,10 +80,10 @@ class ClassFinderTest extends BaseTestCase
         );
         $dir = __DIR__."/../Fixtures/Foo";
         $pattern = '/Buz/';
-        $classFinder = new ClassFinder($dir, $pattern);
+        $classFinder = new ClassFileFinder($dir, $pattern);
 
         //act
-        $result = iterator_to_array($classFinder->find());
+        $result = iterator_to_array($classFinder->find(), false);
         sort($result);
 
 

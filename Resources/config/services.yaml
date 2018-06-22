@@ -1,0 +1,8 @@
+services:
+    rs_di_extra.definition_converter:
+        class:         RS\DiExtraBundle\Converter\DefinitionConverter
+        calls:
+            -
+                method:       injectAnnotationReader
+                arguments:
+                    -          '@annotation_reader'

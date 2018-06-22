@@ -3,7 +3,7 @@ namespace RS\DiExtraBundle\Finder;
 
 use Symfony\Component\Finder\Finder;
 
-class ClassFinder
+class ClassFileFinder
 {
     protected $pattern;
     protected $pathnamePattern;
@@ -31,7 +31,6 @@ class ClassFinder
                     return 0 < preg_match($this->pattern, file_get_contents($file->getPathname()));
                 });
         }
-
         foreach($finder as $file){
             yield realpath($file->getPathname());
         }
