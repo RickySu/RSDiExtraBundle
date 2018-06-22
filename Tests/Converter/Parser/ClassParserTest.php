@@ -3,9 +3,6 @@ namespace RS\DiExtraBundle\Tests\Converter\Parser;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use RS\DiExtraBundle\Annotation\ClassProcessorInterface;
-use RS\DiExtraBundle\Annotation\Observe;
-use RS\DiExtraBundle\Annotation\Service;
-use RS\DiExtraBundle\Annotation\Tag;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use RS\DiExtraBundle\Converter\Parser\ClassParser;
 use RS\DiExtraBundle\Converter\Parser\MethodParser;
@@ -66,7 +63,6 @@ class ClassParserTest extends BaseTestCase
     public function test_parseMethod()
     {
         //arrange
-        $callTimes = 0;
         $classMeta = new ClassMeta();
         $reflectionMethods = array(
             $this->getMockBuilder(\ReflectionMethod::class)->disableOriginalConstructor()->getMock(),
@@ -90,30 +86,82 @@ class ClassParserTest extends BaseTestCase
 
         $classParser = $this->getMockBuilder(ClassParser::class)
             ->disableOriginalConstructor()
+            ->setMethods(array('createMethodParser'))
             ->getMock();
+
+        $classParser
+            ->expects($this->at(0))
+            ->method('createMethodParser')
+            ->willReturnCallback(function(\ReflectionMethod $reflectionMethod) use($classMeta, $reflectionMethods){
+                $this->assertSame($reflectionMethods[0], $reflectionMethod);
+
+                $methodParser = $this->getMockBuilder(MethodParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $methodParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $methodParser;
+            });
+
+        $classParser
+            ->expects($this->at(1))
+            ->method('createMethodParser')
+            ->willReturnCallback(function(\ReflectionMethod $reflectionMethod) use($classMeta, $reflectionMethods){
+                $this->assertSame($reflectionMethods[1], $reflectionMethod);
+
+                $methodParser = $this->getMockBuilder(MethodParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $methodParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $methodParser;
+            });
+
+        $classParser
+            ->expects($this->at(2))
+            ->method('createMethodParser')
+            ->willReturnCallback(function(\ReflectionMethod $reflectionMethod) use($classMeta, $reflectionMethods){
+                $this->assertSame($reflectionMethods[2], $reflectionMethod);
+
+                $methodParser = $this->getMockBuilder(MethodParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $methodParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $methodParser;
+            });
+        $classParser
+            ->expects($this->exactly(3))
+            ->method('createMethodParser')
+        ;
 
         $this->setObjectAttribute($classParser, 'reflectionClass', $reflectionClass);
         $this->setObjectAttribute($classParser, 'annotationReader', $annotationReader);
-
-        $mockMethodParser = \Mockery::mock('overload:'.MethodParser::class);
-        $mockMethodParser
-            ->shouldReceive('parse')
-            ->andReturnUsing(function(ClassMeta $classMetaForTest) use($classMeta, &$callTimes){
-                $this->assertSame($classMeta, $classMetaForTest);
-                $callTimes++;
-            });
 
         //act
         $this->callObjectMethod($classParser, 'parseMethod', $classMeta);
 
         //assert
-        $this->assertEquals(count($reflectionMethods), $callTimes);
     }
 
     public function test_parseProperty()
     {
         //arrange
-        $callTimes = 0;
         $classMeta = new ClassMeta();
         $reflectionProperties = array(
             $this->getMockBuilder(\ReflectionProperty::class)->disableOriginalConstructor()->getMock(),
@@ -137,24 +185,76 @@ class ClassParserTest extends BaseTestCase
 
         $classParser = $this->getMockBuilder(ClassParser::class)
             ->disableOriginalConstructor()
+            ->setMethods(array('createPropertyParser'))
             ->getMock();
+
+        $classParser
+            ->expects($this->at(0))
+            ->method('createPropertyParser')
+            ->willReturnCallback(function(\ReflectionProperty $reflectionProperty) use($classMeta, $reflectionProperties){
+                $this->assertSame($reflectionProperties[0], $reflectionProperty);
+
+                $propertyParser = $this->getMockBuilder(PropertyParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $propertyParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $propertyParser;
+            });
+        $classParser
+            ->expects($this->at(1))
+            ->method('createPropertyParser')
+            ->willReturnCallback(function(\ReflectionProperty $reflectionProperty) use($classMeta, $reflectionProperties){
+                $this->assertSame($reflectionProperties[1], $reflectionProperty);
+
+                $propertyParser = $this->getMockBuilder(PropertyParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $propertyParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $propertyParser;
+            });
+        $classParser
+            ->expects($this->at(2))
+            ->method('createPropertyParser')
+            ->willReturnCallback(function(\ReflectionProperty $reflectionProperty) use($classMeta, $reflectionProperties){
+                $this->assertSame($reflectionProperties[2], $reflectionProperty);
+
+                $propertyParser = $this->getMockBuilder(PropertyParser::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('parse'))
+                    ->getMock();
+
+                $propertyParser
+                    ->expects($this->once())
+                    ->method('parse')
+                    ->with($classMeta);
+
+                return $propertyParser;
+            });
+
+        $classParser
+            ->expects($this->exactly(3))
+            ->method('createPropertyParser')
+        ;
 
         $this->setObjectAttribute($classParser, 'reflectionClass', $reflectionClass);
         $this->setObjectAttribute($classParser, 'annotationReader', $annotationReader);
-
-        $mockPropertyParser = \Mockery::mock('overload:'.PropertyParser::class);
-        $mockPropertyParser
-            ->shouldReceive('parse')
-            ->andReturnUsing(function(ClassMeta $classMetaForTest) use($classMeta, &$callTimes){
-                $this->assertSame($classMeta, $classMetaForTest);
-                $callTimes++;
-            });
 
         //act
         $this->callObjectMethod($classParser, 'parseProperty', $classMeta);
 
         //assert
-        $this->assertEquals(count($reflectionProperties), $callTimes);
     }
 
     public function test_parseClass()
@@ -171,9 +271,9 @@ class ClassParserTest extends BaseTestCase
             ->willReturn('MockClass');
 
         $annotations = array(
-            $this->getMockBuilder(ClassProcessorInterface::class)->getMockForAbstractClass(),
+            $this->getMockBuilder(ClassProcessorInterface::class)->setMethods(array('handleClass'))->getMockForAbstractClass(),
             new \stdClass(),
-            $this->getMockBuilder(ClassProcessorInterface::class)->getMockForAbstractClass(),
+            $this->getMockBuilder(ClassProcessorInterface::class)->setMethods(array('handleClass'))->getMockForAbstractClass(),
         );
 
         $annotations[0]
@@ -223,6 +323,78 @@ class ClassParserTest extends BaseTestCase
         //act
         $this->callObjectMethod($classParser, 'parseClass', $classMeta);
 
+        //assert
+    }
+
+    public function test_parseParent_no_parent_class()
+    {
+        //arrange
+        $classMeta = new ClassMeta();
+        $reflectionClass = $this->getMockBuilder(\ReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('getParentClass'))
+            ->getMock();
+        $reflectionClass
+            ->expects($this->once())
+            ->method('getParentClass')
+            ->willReturn(null);
+
+        $classParser = $this->getMockBuilder(ClassParser::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('createClassParser', 'parse'))
+            ->getMock();
+
+        $classParser
+            ->expects($this->never())
+            ->method('createClassParser')
+            ->with($reflectionClass)
+            ->willReturn($classParser);
+
+        $classParser
+            ->expects($this->never())
+            ->method('parse')
+            ->with($classMeta)
+            ;
+        $this->setObjectAttribute($classParser, 'reflectionClass', $reflectionClass);
+
+        //act
+        $this->callObjectMethod($classParser, 'parseParent', $classMeta);
+        //assert
+    }
+
+    public function test_parseParent()
+    {
+        //arrange
+        $classMeta = new ClassMeta();
+        $reflectionClass = $this->getMockBuilder(\ReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('getParentClass'))
+            ->getMock();
+        $reflectionClass
+            ->expects($this->once())
+            ->method('getParentClass')
+            ->willReturn($reflectionClass);
+
+        $classParser = $this->getMockBuilder(ClassParser::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('createClassParser', 'parse'))
+            ->getMock();
+
+        $classParser
+            ->expects($this->once())
+            ->method('createClassParser')
+            ->with($reflectionClass)
+            ->willReturn($classParser);
+
+        $classParser
+            ->expects($this->once())
+            ->method('parse')
+            ->with($classMeta)
+        ;
+        $this->setObjectAttribute($classParser, 'reflectionClass', $reflectionClass);
+
+        //act
+        $this->callObjectMethod($classParser, 'parseParent', $classMeta);
         //assert
     }
 }

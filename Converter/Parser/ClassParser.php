@@ -33,23 +33,20 @@ class ClassParser
         if(!($parentClass = $this->reflectionClass->getParentClass())){
             return;
         }
-        $classParser = new static($this->annotationReader, $parentClass);
-        $classParser->parse($classMeta);
+        $this->createClassParser($parentClass)->parse($classMeta);
     }
 
     protected function parseMethod(ClassMeta $classMeta)
     {
         foreach ($this->reflectionClass->getMethods() as $reflectionMethod) {
-            $methodParser = new MethodParser($this->annotationReader, $reflectionMethod);
-            $methodParser->parse($classMeta);
+            $this->createMethodParser($reflectionMethod)->parse($classMeta);
         }
     }
 
     protected function parseProperty(ClassMeta $classMeta)
     {
-        foreach ($this->reflectionClass->getProperties() as $reflectionMethod) {
-            $methodParser = new PropertyParser($this->annotationReader, $reflectionMethod);
-            $methodParser->parse($classMeta);
+        foreach ($this->reflectionClass->getProperties() as $reflectionProperty) {
+            $this->createPropertyParser($reflectionProperty)->parse($classMeta);
         }
     }
 
@@ -63,4 +60,32 @@ class ClassParser
             }
         }
     }
+
+    /**
+     * @param \ReflectionClass $reflectionClass
+     * @return ClassParser
+     */
+    protected function createClassParser(\ReflectionClass $reflectionClass)
+    {
+        return new static($this->annotationReader, $reflectionClass);
+    }
+
+    /**
+     * @param \ReflectionMethod $reflectionMethod
+     * @return MethodParser
+     */
+    protected function createMethodParser(\ReflectionMethod $reflectionMethod)
+    {
+        return new MethodParser($this->annotationReader, $reflectionMethod);
+    }
+
+    /**
+     * @param \ReflectionProperty $reflectionProperty
+     * @return PropertyParser
+     */
+    protected function createPropertyParser(\ReflectionProperty $reflectionProperty)
+    {
+        return new PropertyParser($this->annotationReader, $reflectionProperty);
+    }
+
 }
