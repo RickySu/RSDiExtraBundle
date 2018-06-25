@@ -3,6 +3,7 @@ services:
         class:         RS\DiExtraBundle\Converter\DefinitionConverter
         calls:
             -
-                method:       injectAnnotationReader
+                method:       inject
                 arguments:
                     -          '@annotation_reader'
+                    -          '%kernel.environment%'

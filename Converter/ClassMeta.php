@@ -9,14 +9,15 @@ class ClassMeta
     public $shared;
     public $public = true;
     public $private = false;
+    public $decorates;
+    public $decorationInnerName;
+    public $decorationPriority;
     public $deprecated;
     public $abstract;
     public $tags = array();
     public $arguments = array();
     public $methodCalls = array();
-    public $lookupMethods = array();
     public $properties = array();
-    public $initMethods = array();
     public $environments = array();
     public $autowire;
     public $factoryMethod;

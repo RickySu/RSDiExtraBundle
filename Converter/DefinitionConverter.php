@@ -11,9 +11,13 @@ class DefinitionConverter
     /** @var AnnotationReader */
     protected $reader;
 
-    public function injectAnnotationReader(AnnotationReader $reader)
+    /** @var string */
+    protected $environment;
+
+    public function inject(AnnotationReader $reader, $environment)
     {
         $this->reader = $reader;
+        $this->environment = $environment;
     }
 
     /**
@@ -45,11 +49,17 @@ class DefinitionConverter
             return null;
         }
 
+        if(!$this->isEnabledInEnvironment($classMeta->environments)){
+            return null;
+        }
+
         if($classMeta->parent){
             $definition = new ChildDefinition($classMeta->parent);
         }
         else {
             $definition = new Definition($classMeta->class);
+            $definition
+                ->setAutoconfigured($classMeta->autoconfigured);
         }
 
         return $definition
@@ -62,10 +72,11 @@ class DefinitionConverter
             ->setTags($classMeta->tags)
             ->setFactory($classMeta->factoryMethod)
             ->setMethodCalls($classMeta->methodCalls)
-            ->setDeprecated($classMeta->deprecated)
             ->setAutowired($classMeta->autowire)
             ->setArguments($classMeta->arguments)
             ->setLazy($classMeta->lazy)
+            ->setProperties($classMeta->properties)
+            ->setDecoratedService($classMeta->decorates, $classMeta->decorationInnerName, $classMeta->decorationPriority)
             ;
     }
 
@@ -89,5 +100,10 @@ class DefinitionConverter
         }
 
         return $namespace.'\\'.$match[1];
+    }
+
+    protected function isEnabledInEnvironment(array $environments)
+    {
+        return in_array($this->environment, $environments);
     }
 }
