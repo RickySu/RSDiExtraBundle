@@ -26,12 +26,8 @@ class DefinitionConverter
      */
     public function convert($classFile)
     {
-        $classMeta = new ClassMeta();
-        $reflectionClass = $this->getReflectionClass($classFile);
-        $classParser = new ClassParser($this->reader, $reflectionClass);
-        $classParser->parse($classMeta);
-
         $definitions = array();
+        $classMeta = $this->parseClassFile($classFile);
 
         while($classMeta) {
             if($definition = $this->convertDefinition($classMeta)){
@@ -105,5 +101,18 @@ class DefinitionConverter
     protected function isEnabledInEnvironment(array $environments)
     {
         return in_array($this->environment, $environments);
+    }
+
+    /**
+     * @param $classFile
+     * @return ClassMeta
+     */
+    protected function parseClassFile($classFile)
+    {
+        $classMeta = new ClassMeta();
+        $reflectionClass = $this->getReflectionClass($classFile);
+        $classParser = new ClassParser($this->reader, $reflectionClass);
+        $classParser->parse($classMeta);
+        return $classMeta;
     }
 }

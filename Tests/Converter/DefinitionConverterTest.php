@@ -237,4 +237,57 @@ class DefinitionConverterTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
+    public function test_convert()
+    {
+        //arrange
+        $classFile = 'foo.php';
+        $classMeta = new ClassMeta();
+        $classMeta->id = 'foo';
+        $classMeta->nextClassMeta = new ClassMeta();
+        $classMeta->nextClassMeta->id = 'bar';
+        $classMeta->nextClassMeta->nextClassMeta = new ClassMeta();
+        $classMeta->nextClassMeta->nextClassMeta->id = 'buz';
+
+        $definition0 = new Definition();
+        $definition1 = new Definition();
+        $definition2 = new Definition();
+
+        $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
+            ->setMethods(array('parseClassFile', 'convertDefinition'))
+            ->getMock();
+
+        $definitionConverter
+            ->expects($this->once())
+            ->method('parseClassFile')
+            ->with($classFile)
+            ->willReturn($classMeta);
+
+        $definitionConverter
+            ->expects($this->at(1))
+            ->method('convertDefinition')
+            ->with($classMeta)
+            ->willReturn(null);
+        $definitionConverter
+            ->expects($this->at(2))
+            ->method('convertDefinition')
+            ->with($classMeta->nextClassMeta)
+            ->willReturn($definition1);
+        $definitionConverter
+            ->expects($this->at(3))
+            ->method('convertDefinition')
+            ->with($classMeta->nextClassMeta->nextClassMeta)
+            ->willReturn($definition2);
+        $definitionConverter
+            ->expects($this->exactly(3))
+            ->method('convertDefinition')
+            ;
+
+        //act
+        $result = $definitionConverter->convert($classFile);
+
+        //assert
+        $this->assertEquals(array('bar', 'buz'), array_keys($result));
+        $this->assertSame($definition1, $result['bar']);
+        $this->assertSame($definition2, $result['buz']);
+    }
 }
