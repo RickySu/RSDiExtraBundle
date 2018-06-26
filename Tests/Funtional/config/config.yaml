@@ -10,3 +10,6 @@ rs_di_extra:
     locations:
         bundles:
             -         BarBundle
+
+parameters:
+    foo:              bar

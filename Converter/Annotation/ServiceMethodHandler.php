@@ -25,13 +25,18 @@ class ServiceMethodHandler
         $factoryClassMeta->abstract = $annotation->abstract;
         $factoryClassMeta->environments = $annotation->environments;
         $factoryClassMeta->autowire = $annotation->autowire;
-        $factoryClassMeta->autowiringTypes = $annotation->autowiringTypes;
 
         if($classMeta->id) {
-            $factoryClassMeta->factoryMethod = [new Reference($classMeta->id), $reflectionMethod->getName()];
+            $factoryClassMeta->factoryMethod = array(
+                new Reference($classMeta->id),
+                $reflectionMethod->getName()
+            );
         }
         else{
-            $factoryClassMeta->factoryMethod = [$reflectionMethod->getDeclaringClass()->getName(), $reflectionMethod->getName()];
+            $factoryClassMeta->factoryMethod = array(
+                $reflectionMethod->getDeclaringClass()->getName(),
+                $reflectionMethod->getName()
+            );
         }
 
         $factoryClassMeta->class = $reflectionMethod->getDeclaringClass()->getName();
