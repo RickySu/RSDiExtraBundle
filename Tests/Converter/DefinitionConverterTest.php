@@ -207,6 +207,21 @@ class DefinitionConverterTest extends BaseTestCase
         $this->assertEquals($classMeta->lazy, $result->isLazy());
     }
 
+    public function test_isEnabledInEnvironment_empty_array()
+    {
+        //arrange
+        $allowEnvironments = array();
+        $environment = 'dev';
+        $definitionConverter = new DefinitionConverter();
+        $this->setObjectAttribute($definitionConverter, 'environment', $environment);
+
+        //act
+        $result = $this->callObjectMethod($definitionConverter, 'isEnabledInEnvironment', $allowEnvironments);
+
+        //assert
+        $this->assertTrue($result);
+    }
+
     public function test_isEnabledInEnvironment_match()
     {
         //arrange

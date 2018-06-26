@@ -100,6 +100,10 @@ class DefinitionConverter
 
     protected function isEnabledInEnvironment(array $environments)
     {
+        if(count($environments) == 0){
+            return true;
+        }
+
         return in_array($this->environment, $environments);
     }
 
