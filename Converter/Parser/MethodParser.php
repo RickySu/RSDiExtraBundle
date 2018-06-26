@@ -3,7 +3,7 @@ namespace RS\DiExtraBundle\Converter\Parser;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use RS\DiExtraBundle\Annotation\MethodProcessorInterface;
-use RS\DiExtraBundle\Converter\Annotation\MethodObserveHandler;
+use RS\DiExtraBundle\Converter\Annotation\ObserveMethodHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
 class MethodParser
