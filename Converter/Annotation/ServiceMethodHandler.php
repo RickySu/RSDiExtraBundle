@@ -18,13 +18,20 @@ class ServiceMethodHandler
         $classMeta->nextClassMeta = $factoryClassMeta;
 
         $factoryClassMeta->id = $annotation->id;
-
+        $factoryClassMeta->parent = $annotation->parent;
+        $factoryClassMeta->shared = $annotation->shared;
         $factoryClassMeta->public = $annotation->public;
         $factoryClassMeta->private = $annotation->private;
-        $factoryClassMeta->shared = $annotation->shared;
+        $factoryClassMeta->decorates = $annotation->decorates;
+        $factoryClassMeta->decorationInnerName = $annotation->decorationInnerName;
+        $factoryClassMeta->decorationPriority = $annotation->decorationPriority;
+        $factoryClassMeta->deprecated = $annotation->deprecated;
         $factoryClassMeta->abstract = $annotation->abstract;
         $factoryClassMeta->environments = $annotation->environments;
         $factoryClassMeta->autowire = $annotation->autowire;
+        $factoryClassMeta->synthetic = $annotation->synthetic;
+        $factoryClassMeta->lazy = $annotation->lazy;
+        $factoryClassMeta->autoconfigured = $annotation->autoconfigured;
 
         if($classMeta->id) {
             $factoryClassMeta->factoryMethod = array(
