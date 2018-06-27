@@ -1,14 +1,14 @@
 <?php
 namespace RS\DiExtraBundle\Converter\Annotation;
 
+use RS\DiExtraBundle\Annotation\FormType;
 use RS\DiExtraBundle\Annotation\Service;
 use RS\DiExtraBundle\Annotation\Tag;
-use RS\DiExtraBundle\Annotation\Validator;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
-class ValidatorClassHandler
+class FormTypeClassHandler
 {
-    public function handle(ClassMeta $classMeta, \ReflectionClass $reflectionClass, Validator $validatorAnnotation)
+    public function handle(ClassMeta $classMeta, \ReflectionClass $reflectionClass, FormType $formTypeAnnotation)
     {
         if($classMeta->id === null) {
             $serviceAnnotation = new Service();
@@ -17,9 +17,9 @@ class ValidatorClassHandler
         }
 
         $tagAnnotation = new Tag();
-        $tagAnnotation->name = 'validator.constraint_validator';
+        $tagAnnotation->name = 'form.type';
         $tagAnnotation->attributes = array(
-            'alias' => $validatorAnnotation->alias,
+            'alias' => $formTypeAnnotation->alias,
         );
         (new TagClassHandler())->handle($classMeta, $reflectionClass, $tagAnnotation);
     }

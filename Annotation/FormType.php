@@ -1,6 +1,5 @@
 <?php
 namespace RS\DiExtraBundle\Annotation;
-
 use RS\DiExtraBundle\Converter\Annotation\FormTypeClassHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
@@ -8,7 +7,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  * @Annotation
  * @Target("CLASS")
  */
-final class Validator implements ClassProcessorInterface
+final class FormType implements ClassProcessorInterface
 {
     /** @var string */
     public $alias;
