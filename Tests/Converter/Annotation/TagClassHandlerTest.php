@@ -13,6 +13,8 @@ class TagClassHandlerTest extends BaseTestCase
     {
         //arrange
         $classMeta = new ClassMeta();
+        $classMeta->class = self::class;
+
         $tag = new Tag();
         $tag->name = 'foo';
         $tag->attributes = array('bar' => 'buz');
@@ -34,6 +36,8 @@ class TagClassHandlerTest extends BaseTestCase
     {
         //arrange
         $classMeta = new ClassMeta();
+        $classMeta->class = self::class;
+
         $classMeta->tags['foo'] = array(
             array('bar1' => 'buz'),
         );

@@ -12,6 +12,8 @@ class ObserverMethodHandlerTest extends BaseTestCase
     {
         //arrange
         $classMeta = new ClassMeta();
+        $classMeta->class = self::class;
+
         $observer = new Observe();
         $observer->event = 'kernel.request';
         $observer->priority = 20;
