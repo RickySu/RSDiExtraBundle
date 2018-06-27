@@ -2,6 +2,7 @@
 namespace RS\DiExtraBundle\Converter\Annotation;
 
 use RS\DiExtraBundle\Annotation\Observe;
+use RS\DiExtraBundle\Annotation\Tag;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
 class ObserveMethodHandler
@@ -15,14 +16,13 @@ class ObserveMethodHandler
      */
     public function handle(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod, Observe $annotation)
     {
-        if(!isset($classMeta->tags[self::EVENT_LISTENER_TAG])){
-            $classMeta->tags[self::EVENT_LISTENER_TAG] = array();
-        }
-
-        $classMeta->tags[self::EVENT_LISTENER_TAG][] = array(
+        $tagAnnotation = new Tag();
+        $tagAnnotation->name = self::EVENT_LISTENER_TAG;
+        $tagAnnotation->attributes = array(
             'event' => $annotation->event,
             'priority' => $annotation->priority,
             'method' => $reflectionMethod->getName(),
         );
+        $tagAnnotation->handleClass($classMeta, $reflectionMethod->getDeclaringClass());
     }
 }
