@@ -8,6 +8,8 @@ use RS\DiExtraBundle\Converter\ClassMeta;
 
 class ValidatorClassHandler
 {
+    const EVENT_LISTENER_TAG = 'validator.constraint_validator';
+
     public function handle(ClassMeta $classMeta, \ReflectionClass $reflectionClass, Validator $validatorAnnotation)
     {
         if($classMeta->id === null) {
@@ -17,7 +19,7 @@ class ValidatorClassHandler
         }
 
         $tagAnnotation = new Tag();
-        $tagAnnotation->name = 'validator.constraint_validator';
+        $tagAnnotation->name = self::EVENT_LISTENER_TAG;
         $tagAnnotation->attributes = array(
             'alias' => $validatorAnnotation->alias,
         );
