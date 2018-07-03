@@ -51,17 +51,6 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                    ->booleanNode('doctrine_integration')
-                        ->validate()
-                            ->always(function ($v) {
-                                if ($v && !class_exists('Doctrine\ORM\EntityManager')) {
-                                    throw new \Exception('Doctrine integration is only available for the Doctrine ORM at the moment.');
-                                }
-                                return $v;
-                            })
-                        ->end()
-                        ->defaultValue(class_exists('Doctrine\ORM\EntityManager'))
-                    ->end()
                 ->end()
             ->end()
             ;

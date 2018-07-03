@@ -119,4 +119,5 @@ class DefinitionConverter
         $classParser->parse($classMeta);
         return $classMeta;
     }
+
 }

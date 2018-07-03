@@ -17,6 +17,11 @@ class ClassGenerator extends BaseGenerator
         $this->generateMethods();
     }
 
+    public function removeMethod($methodName)
+    {
+        unset($this->methods[$methodName]);
+    }
+
     protected function generateMethods()
     {
         /** @var \ReflectionMethod[] $reflectionMethods */
@@ -51,7 +56,7 @@ class ClassGenerator extends BaseGenerator
 namespace $namespace;
 
 {$this->getUsesDefine()}
-class $class
+class $class extends {$this->getExtendClassAlias()}
 {
 {$this->getTraitsDefine()}{$this->getMethodsDefine()}
 }
@@ -89,6 +94,8 @@ EOT;
 
     public function generate()
     {
+        $this->addUse($this->reflectionClass->getName(), $this->getExtendClassAlias());
+
         foreach ($this->methods as $method){
             $method->generate();
         }
@@ -98,13 +105,17 @@ EOT;
     {
         $usesDefine = '';
         foreach ($this->uses as $use => $alias){
-            $usesDefine .= "use {$use}".($alias == ''?'':"as $alias").";\n";
+            $usesDefine .= "use {$use}".($alias == ''?'':" as $alias").";\n";
         }
         return $usesDefine;
     }
 
     public function addUse($fullName, $alias = '')
     {
+        if(isset($this->uses[$fullName])){
+            return;
+        }
+
         $this->uses[$fullName] = $alias;
     }
 
@@ -116,5 +127,10 @@ EOT;
             $traitsDefine .= "{$this->getIdent()}use {$shortName};\n";
         }
         return $traitsDefine;
+    }
+
+    protected function getExtendClassAlias()
+    {
+        return 'Base'.md5($this->reflectionClass->getFileName());
     }
 }

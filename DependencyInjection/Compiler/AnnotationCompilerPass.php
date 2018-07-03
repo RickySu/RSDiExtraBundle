@@ -80,4 +80,5 @@ class AnnotationCompilerPass implements CompilerPassInterface
             $container->addResource(new DirectoryResource($directory));
         }
     }
+
 }

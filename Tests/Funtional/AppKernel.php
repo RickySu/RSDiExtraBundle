@@ -1,6 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Tests\Funtional;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use RS\DiExtraBundle\RSDiExtraBundle;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Bar\BarBundle;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\FooBundle;
@@ -30,6 +31,7 @@ class AppKernel extends Kernel
             new RSDiExtraBundle(),
             new FooBundle(),
             new BarBundle(),
+            new DoctrineBundle(),
         ];
     }
 

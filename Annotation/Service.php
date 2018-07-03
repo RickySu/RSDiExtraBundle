@@ -17,7 +17,7 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
     public $parent;
 
     /** @var bool */
-    public $public;
+    public $public = true;
 
     /** @var bool */
     public $private = false;
