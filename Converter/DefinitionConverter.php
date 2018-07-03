@@ -1,20 +1,20 @@
 <?php
 namespace RS\DiExtraBundle\Converter;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Converter\Parser\ClassParser;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Definition;
 
 class DefinitionConverter
 {
-    /** @var AnnotationReader */
+    /** @var Reader */
     protected $reader;
 
     /** @var string */
     protected $environment;
 
-    public function inject(AnnotationReader $reader, $environment)
+    public function inject(Reader $reader, $environment)
     {
         $this->reader = $reader;
         $this->environment = $environment;

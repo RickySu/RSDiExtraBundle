@@ -10,6 +10,7 @@ rs_di_extra:
     locations:
         bundles:
             -         BarBundle
+    doctrine_integration: true
 
 parameters:
     foo:              bar

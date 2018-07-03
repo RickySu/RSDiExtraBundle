@@ -1,7 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Converter\Parser;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Annotation\ClassProcessorInterface;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
@@ -9,10 +9,10 @@ class ClassParser
 {
     /** @var \ReflectionClass  */
     protected $reflectionClass;
-    /** @var AnnotationReader  */
+    /** @var Reader  */
     protected $annotationReader;
 
-    public function __construct(AnnotationReader $annotationReader, \ReflectionClass $reflectionClass)
+    public function __construct(Reader $annotationReader, \ReflectionClass $reflectionClass)
     {
         $this->annotationReader = $annotationReader;
         $this->reflectionClass = $reflectionClass;

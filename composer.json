@@ -24,7 +24,9 @@
         "symfony/framework-bundle": "~4.0",
         "symfony/phpunit-bridge": "~4.0",
         "phpunit/phpunit": "^5.4.4",
-        "doctrine/annotations": "^1.6"
+        "doctrine/annotations": "^1.6",
+        "doctrine/orm": "^2.6",
+        "doctrine/doctrine-bundle": "^1.9"
     },
     "scripts": {
         "auto-scripts": {
