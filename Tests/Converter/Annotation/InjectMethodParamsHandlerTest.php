@@ -12,109 +12,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class InjectMethodParamsHandlerTest extends BaseTestCase
 {
-    /**
-     * @dataProvider dataProvider_isTagged
-     */
-    public function test_isTagged($status, $name)
-    {
-        //arrange
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
-
-        //act
-        $result = $this->callObjectMethod($methodInjectParamsHandler, 'isTagged', $name);
-
-        //assert
-        $this->assertEquals($status, $result);
-    }
-
-    public function dataProvider_isTagged()
-    {
-        return array(
-            array(
-                'status' => true,
-                'name' => '!tagged debug',
-            ),
-            array(
-                'status' => false,
-                'name' => '!tagged_something',
-            ),
-            array(
-                'status' => false,
-                'name' => 'debug',
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider dataProvider_isParameters
-     */
-    public function test_isParameters($status, $name)
-    {
-        //arrange
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
-
-        //act
-        $result = $this->callObjectMethod($methodInjectParamsHandler, 'isParameters', $name);
-
-        //assert
-        $this->assertEquals($status, $result);
-    }
-
-    public function dataProvider_isParameters()
-    {
-        return array(
-            array(
-                'status' => true,
-                'name' => '%debug%',
-            ),
-            array(
-                'status' => false,
-                'name' => '%debug',
-            ),
-            array(
-                'status' => false,
-                'name' => 'debug%',
-            ),
-            array(
-                'status' => false,
-                'name' => 'debug',
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider dataProvider_camelToSnake
-     */
-    public function test_camelToSnake($camel, $snake)
-    {
-        //arrange
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
-
-        //act
-        $result = $this->callObjectMethod($methodInjectParamsHandler, 'camelToSnake', $camel);
-
-        //assert
-        $this->assertEquals($snake, $result);
-    }
-
-    public function dataProvider_camelToSnake()
-    {
-        return array(
-            array(
-                'camel' => 'AAbC',
-                'snake' => 'a_ab_c',
-            ),
-            array(
-                'camel' => '__AAbC',
-                'snake' => 'a_ab_c',
-            ),
-
-            array(
-                'camel' => 'RsDiExtraBundle',
-                'snake' => 'rs_di_extra_bundle',
-            ),
-        );
-    }
 
     public function test_convertAnnotationArguments_is_tagged()
     {
@@ -129,23 +26,8 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param0']->required = true;
         $injectParams->params['param1']->value = '!tagged value1';
         $injectParams->params['param1']->required = false;
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
-            ->setMethods(array('isTagged', 'isParameters'))
-            ->getMock();
 
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('isTagged')
-            ->willReturnCallback(function($param) use(&$isTaggedIndex, $injectParams){
-                $this->assertEquals($injectParams->params["param{$isTaggedIndex}"]->value, $param);
-                $isTaggedIndex++;
-                return true;
-            });
-
-        $methodInjectParamsHandler
-            ->expects($this->never())
-            ->method('isParameters')
-            ;
+        $methodInjectParamsHandler = new MethodInjectParamsHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -173,27 +55,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param1']->value = '%value1%';
         $injectParams->params['param1']->required = false;
 
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
-            ->setMethods(array('isTagged', 'isParameters'))
-            ->getMock();
-
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('isTagged')
-            ->willReturnCallback(function($param) use(&$isTaggedIndex, $injectParams){
-                $this->assertEquals($injectParams->params["param{$isTaggedIndex}"]->value, $param);
-                $isTaggedIndex++;
-                return false;
-            });
-
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('isParameters')
-            ->willReturnCallback(function($param) use(&$isParametersIndex, $injectParams){
-                $this->assertEquals($injectParams->params["param{$isParametersIndex}"]->value, $param);
-                $isParametersIndex++;
-                return true;
-            });
+        $methodInjectParamsHandler = new MethodInjectParamsHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -221,27 +83,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param1']->value = 'value1';
         $injectParams->params['param1']->required = false;
 
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
-            ->setMethods(array('isTagged', 'isParameters'))
-            ->getMock();
-
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('isTagged')
-            ->willReturnCallback(function($param) use(&$isTaggedIndex, $injectParams){
-                $this->assertEquals($injectParams->params["param{$isTaggedIndex}"]->value, $param);
-                $isTaggedIndex++;
-                return false;
-            });
-
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('isParameters')
-            ->willReturnCallback(function($param) use(&$isParametersIndex, $injectParams){
-                $this->assertEquals($injectParams->params["param{$isParametersIndex}"]->value, $param);
-                $isParametersIndex++;
-                return false;
-            });
+        $methodInjectParamsHandler = new MethodInjectParamsHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -259,21 +101,33 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
     public function test_convertArguments()
     {
         //arrange
-        $reflectionParameter0 = $this->getMockBuilder(\ReflectionParameter::class)
+        $reflectionType = $this->getMockBuilder(\ReflectionType::class)
             ->setMethods(array('getName'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $reflectionType
+            ->expects($this->once())
+            ->method('getName')
+            ->willReturn('ReflectTypeName');
+
+        $reflectionParameter0 = $this->getMockBuilder(\ReflectionParameter::class)
+            ->setMethods(array('getName', 'getType'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter0->expects($this->atLeastOnce())->method('getName')->willReturn('foo');
+        $reflectionParameter0->expects($this->atLeastOnce())->method('getType')->willReturn(null);
         $reflectionParameter1 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName'))
+            ->setMethods(array('getName', 'getType'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter1->expects($this->atLeastOnce())->method('getName')->willReturn('bar');
+        $reflectionParameter1->expects($this->atLeastOnce())->method('getType')->willReturn($reflectionType);
         $reflectionParameter2 = $this->getMockBuilder(\ReflectionParameter::class)
-        ->setMethods(array('getName'))
+        ->setMethods(array('getName', 'getType'))
         ->disableOriginalConstructor()
         ->getMock();
         $reflectionParameter2->expects($this->never())->method('getName')->willReturn('buz');
+        $reflectionParameter2->expects($this->never())->method('getType')->willReturn(null);
 
         $parameters = array(
             $reflectionParameter0,
@@ -293,23 +147,8 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->expects($this->atLeastOnce())
             ->method('getNumberOfRequiredParameters')
             ->willReturn(count($parameters) - 1);
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
-            ->setMethods(array('camelToSnake'))
-            ->getMock();
 
-        $methodInjectParamsHandler
-            ->expects($this->at(0))
-            ->method('camelToSnake')
-            ->with('foo')
-            ->willReturn('foo');
-        $methodInjectParamsHandler
-            ->expects($this->at(1))
-            ->method('camelToSnake')
-            ->with('bar')
-            ->willReturn('bar');
-        $methodInjectParamsHandler
-            ->expects($this->exactly(2))
-            ->method('camelToSnake');
+        $methodInjectParamsHandler = new MethodInjectParamsHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertArguments', $reflectionMethod);
@@ -320,7 +159,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $this->assertEquals('foo', (string)$result['foo']);
         $this->assertEquals(ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $result['foo']->getInvalidBehavior());
         $this->assertInstanceOf(Reference::class, $result['bar']);
-        $this->assertEquals('bar', (string)$result['bar']);
+        $this->assertEquals('ReflectTypeName', (string)$result['bar']);
         $this->assertEquals(ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $result['bar']->getInvalidBehavior());
     }
 

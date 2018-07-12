@@ -5,6 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use RS\DiExtraBundle\RSDiExtraBundle;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Bar\BarBundle;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\FooBundle;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -28,10 +29,11 @@ class AppKernel extends Kernel
     {
         return [
             new FrameworkBundle(),
+            new DoctrineBundle(),
             new RSDiExtraBundle(),
+            new SensioFrameworkExtraBundle(),
             new FooBundle(),
             new BarBundle(),
-            new DoctrineBundle(),
         ];
     }
 

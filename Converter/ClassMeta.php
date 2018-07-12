@@ -18,6 +18,7 @@ class ClassMeta
     public $arguments = array();
     public $methodCalls = array();
     public $properties = array();
+    public $controllerProperties = array();
     public $environments = array();
     public $autowire;
     public $factoryMethod;

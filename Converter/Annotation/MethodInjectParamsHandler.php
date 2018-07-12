@@ -3,30 +3,29 @@ namespace RS\DiExtraBundle\Converter\Annotation;
 
 
 use RS\DiExtraBundle\Annotation\InjectParams;
+use RS\DiExtraBundle\Annotation\Service;
 use RS\DiExtraBundle\Converter\ClassMeta;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 class MethodInjectParamsHandler
 {
+    /** @var ParameterGuesser  */
+    protected $parameterGuesser;
+
+    public function __construct()
+    {
+        $this->parameterGuesser = new ParameterGuesser();
+    }
+
     public function handle(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod, InjectParams $annotation)
     {
         $arguments = $this->convertArguments($reflectionMethod);
         $annotationArguments = $this->convertAnnotationArguments($annotation);
         $mappedArguments = $this->mapArguments($reflectionMethod, array_merge($arguments, $annotationArguments));
-
-        if($reflectionMethod->isConstructor()) {
-            $classMeta->arguments = $mappedArguments;
-            return;
-        }
-
-        if ($factoryClassMeta = $this->findFactoryClassMeta($classMeta, $reflectionMethod)){
-            $factoryClassMeta->arguments = $mappedArguments;
-            return;
-        }
-
-        $classMeta->methodCalls[] = array($reflectionMethod->getName(), $mappedArguments);
+        $this->handleMethodInject($classMeta, $reflectionMethod, $mappedArguments);
     }
 
     protected function findFactoryClassMeta(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
@@ -59,10 +58,7 @@ class MethodInjectParamsHandler
         $arguments = array();
         $parameters = $reflectionMethod->getParameters();
         for($i = 0; $i < $reflectionMethod->getNumberOfRequiredParameters(); $i++){
-            $arguments[$parameters[$i]->getName()] = new Reference(
-                $this->camelToSnake($parameters[$i]->getName()),
-                ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE
-            );
+            $arguments[$parameters[$i]->getName()] = $this->parameterGuesser->guessArgument($parameters[$i]->getName(), $parameters[$i]->getType());
         }
 
         return $arguments;
@@ -73,42 +69,30 @@ class MethodInjectParamsHandler
         $annotationArguments = array();
 
         foreach ($annotation->params as $paramName => $injectOption){
-            if($this->isTagged($injectOption->value)){
-                list(, $value) = explode(' ', $injectOption->value);
-                $annotationArguments[$paramName] = new TaggedIteratorArgument($value);
-                continue;
-            }
-
-            if($this->isParameters($injectOption->value)){
-                $annotationArguments[$paramName] = $injectOption->value;
-                continue;
-            }
-
-            $annotationArguments[$paramName] = new Reference(
-                $injectOption->value,
-                $injectOption->required?ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE:ContainerInterface::IGNORE_ON_INVALID_REFERENCE
-            );
+            $annotationArguments[$paramName] = $this->parameterGuesser->guessAnnotationArgument($injectOption->value, $injectOption->required);
         }
 
         return $annotationArguments;
     }
 
-    protected function camelToSnake($camel)
+    /**
+     * @param ClassMeta $classMeta
+     * @param \ReflectionMethod $reflectionMethod
+     * @param $mappedArguments
+     */
+    protected function handleMethodInject(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod, $mappedArguments): void
     {
-        $snake = preg_replace_callback('/[A-Z]/', function ($match){
-            return '_' . strtolower($match[0]);
-        }, $camel);
-        return ltrim($snake, '_');
-    }
+        if ($reflectionMethod->isConstructor()) {
+            $classMeta->arguments = $mappedArguments;
+            return;
+        }
 
-    protected function isParameters($name)
-    {
-        return (bool) preg_match('/^%.*?%$/', $name, $match);
-    }
+        if ($factoryClassMeta = $this->findFactoryClassMeta($classMeta, $reflectionMethod)) {
+            $factoryClassMeta->arguments = $mappedArguments;
+            return;
+        }
 
-    protected function isTagged($name)
-    {
-        return strpos($name, '!tagged ') === 0;
+        $classMeta->methodCalls[] = array($reflectionMethod->getName(), $mappedArguments);
     }
 
 }

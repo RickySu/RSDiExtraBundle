@@ -33,23 +33,40 @@ class ServiceMethodHandler
         $factoryClassMeta->lazy = $annotation->lazy;
         $factoryClassMeta->autoconfigured = $annotation->autoconfigured;
 
-        if($classMeta->id) {
-            $factoryClassMeta->factoryMethod = array(
-                new Reference($classMeta->id),
-                $reflectionMethod->getName()
-            );
-        }
-        else{
-            $factoryClassMeta->factoryMethod = array(
-                $reflectionMethod->getDeclaringClass()->getName(),
-                $reflectionMethod->getName()
-            );
-        }
-
         $factoryClassMeta->class = $reflectionMethod->getDeclaringClass()->getName();
 
         if($factoryClassMeta->id == null){
             $factoryClassMeta->id = "{$classMeta->class}.{$reflectionMethod->getName()}";
         }
+
+        if($classMeta->id) {
+            $factoryClassMeta->factoryMethod = array(
+                new Reference($classMeta->id),
+                $reflectionMethod->getName()
+            );
+            return;
+        }
+
+
+        $factoryClassMeta->factoryMethod = array(
+            $reflectionMethod->getDeclaringClass()->getName(),
+            $reflectionMethod->getName()
+        );
+
+        if ($classMeta->methodCalls) {
+            foreach ($classMeta->methodCalls as $methodCall){
+                list($methodName, $arguments) = $methodCall;
+                if($methodName == $reflectionMethod->getName()){
+                    $factoryClassMeta->arguments = $arguments;
+                }
+            }
+            $classMeta->methodCalls = array();
+        }
+
+    }
+
+    protected function isFactoryClass(ClassMeta $classMeta)
+    {
+        return $classMeta->id == null;
     }
 }

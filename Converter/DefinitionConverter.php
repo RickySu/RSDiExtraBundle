@@ -3,6 +3,7 @@ namespace RS\DiExtraBundle\Converter;
 
 use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Converter\Parser\ClassParser;
+use RS\DiExtraBundle\Generator\Factory\ControllerGenerator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -14,10 +15,14 @@ class DefinitionConverter
     /** @var string */
     protected $environment;
 
-    public function inject(Reader $reader, $environment)
+    /** @var string */
+    protected $cacheDir;
+
+    public function inject(Reader $reader, $environment, $cacheDir)
     {
         $this->reader = $reader;
         $this->environment = $environment;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -56,6 +61,11 @@ class DefinitionConverter
             $definition = new Definition($classMeta->class);
             $definition
                 ->setAutoconfigured($classMeta->autoconfigured);
+        }
+
+        if($classMeta->controllerProperties){
+            $this->createControllerFactory($classMeta, $definition);
+            return $definition;
         }
 
         return $definition
@@ -118,6 +128,21 @@ class DefinitionConverter
         $classParser = new ClassParser($this->reader, $reflectionClass);
         $classParser->parse($classMeta);
         return $classMeta;
+    }
+
+    protected function createControllerFactory(ClassMeta $classMeta, Definition $definition)
+    {
+        $outputPath = $this->cacheDir."/controllers";
+        @mkdir($outputPath, 0777, true);
+        $generator = new ControllerGenerator($classMeta->class, array_keys($classMeta->controllerProperties));
+        $filePath = "$outputPath/{$generator->getFactoryClassName()}.php";
+        file_put_contents($filePath, $generator->getDefine());
+        include_once $filePath;
+        $definition
+            ->setFile($filePath)
+            ->setFactory(array($generator->getFactoryClassFullName(), 'factory'))
+            ->setArguments(array_values($classMeta->controllerProperties))
+            ->setPublic(true);
     }
 
 }

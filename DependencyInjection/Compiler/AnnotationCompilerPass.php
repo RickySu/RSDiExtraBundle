@@ -70,6 +70,9 @@ class AnnotationCompilerPass implements CompilerPassInterface
             $container->addResource(new FileResource($classFile));
             foreach ($converter->convert($classFile) as $id => $definition){
                 $container->setDefinition($id, $definition);
+                if($id != $definition->getClass()) {
+                    $container->setAlias($definition->getClass(), $id);
+                }
             }
         }
     }
