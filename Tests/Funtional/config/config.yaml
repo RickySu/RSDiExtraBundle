@@ -9,7 +9,7 @@ framework:
 rs_di_extra:
     locations:
         bundles:
-            -         BarBundle
+            -         FooBundle
 
 doctrine:
     dbal:
@@ -23,7 +23,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         mappings:
-            BarBundle:
+            FooBundle:
                 is_bundle: true
                 type: annotation
 

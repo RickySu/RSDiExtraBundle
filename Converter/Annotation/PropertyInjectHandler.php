@@ -3,6 +3,7 @@ namespace RS\DiExtraBundle\Converter\Annotation;
 
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Converter\ClassMeta;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PropertyInjectHandler
 {
@@ -24,11 +25,22 @@ class PropertyInjectHandler
             $classMeta->id = $classMeta->class;
         }
 
-        if($annotation->value === null){
-            $classMeta->controllerProperties[$reflectionProperty->getName()] = $this->parameterGuesser->guessArgument($reflectionProperty->getName());
+        if($reflectionProperty->getDeclaringClass()->isSubclassOf(Controller::class)){
+            if($annotation->value === null){
+                $classMeta->controllerProperties[$reflectionProperty->getName()] = $this->parameterGuesser->guessArgument($reflectionProperty->getName());
+                return;
+            }
+
+            $classMeta->controllerProperties[$reflectionProperty->getName()] = $this->parameterGuesser->guessAnnotationArgument($annotation->value, $annotation->required);
             return;
         }
 
-        $classMeta->controllerProperties[$reflectionProperty->getName()] = $this->parameterGuesser->guessAnnotationArgument($annotation->value, $annotation->required);
+        if($annotation->value === null){
+            $classMeta->properties[$reflectionProperty->getName()] = $this->parameterGuesser->guessArgument($reflectionProperty->getName());
+            return;
+        }
+
+        $classMeta->properties[$reflectionProperty->getName()] = $this->parameterGuesser->guessAnnotationArgument($annotation->value, $annotation->required);
+
     }
 }
