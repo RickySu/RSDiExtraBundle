@@ -84,9 +84,6 @@ class MethodInjectParamsHandler
     {
         if ($reflectionMethod->isConstructor()) {
             $classMeta->arguments = $mappedArguments;
-            echo $reflectionMethod->getName()."\n";
-            print_r($mappedArguments);
-            print_r($classMeta);
             return;
         }
 
