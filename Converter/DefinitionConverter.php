@@ -140,7 +140,7 @@ class DefinitionConverter
         include_once $filePath;
         $definition
             ->setFile($filePath)
-            ->setFactory(array($generator->getFactoryClassFullName(), 'factory'))
+            ->setFactory(array($generator->getFactoryClassFullName(), 'create'))
             ->setArguments(array_values($classMeta->controllerProperties))
             ->setPublic(true);
     }

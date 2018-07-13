@@ -38,7 +38,7 @@ namespace {$this->getFactoryNamespace()};
 
 class {$this->getFactoryClassName()}
 {
-    public static function factory({$this->getInjectParameters()})
+    public static function create({$this->getInjectParameters()})
     {
         \$controller = new \\{$this->className}();
 {$this->getSetterDefine()}
