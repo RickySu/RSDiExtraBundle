@@ -28,20 +28,6 @@ class InjectParamsMethodHandler
         $this->handleMethodInject($classMeta, $reflectionMethod, $mappedArguments);
     }
 
-    protected function findFactoryClassMeta(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
-    {
-        while($classMeta){
-            if($classMeta->factoryMethod &&
-                $classMeta->factoryClass == $reflectionMethod->getDeclaringClass()->getName() &&
-                $classMeta->factoryMethod[1] == $reflectionMethod->getName()
-            ){
-                return $classMeta;
-            }
-            $classMeta = $classMeta->nextClassMeta;
-        }
-        return false;
-    }
-
     protected function mapArguments(\ReflectionMethod $reflectionMethod, $arguments)
     {
         $result = array();
@@ -87,7 +73,7 @@ class InjectParamsMethodHandler
             return;
         }
 
-        if ($factoryClassMeta = $this->findFactoryClassMeta($classMeta, $reflectionMethod)) {
+        if ($factoryClassMeta = $classMeta->findFactoryClassMeta($reflectionMethod)) {
             $factoryClassMeta->arguments = $mappedArguments;
             return;
         }
