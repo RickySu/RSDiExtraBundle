@@ -1,6 +1,6 @@
 <?php
 namespace RS\DiExtraBundle\Annotation;
-use RS\DiExtraBundle\Converter\Annotation\MethodInjectParamsHandler;
+use RS\DiExtraBundle\Converter\Annotation\InjectParamsMethodHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
 /**
@@ -14,6 +14,6 @@ final class InjectParams implements MethodProcessorInterface
 
     public function handleMethod(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
     {
-        (new MethodInjectParamsHandler())->handle($classMeta, $reflectionMethod, $this);
+        (new InjectParamsMethodHandler())->handle($classMeta, $reflectionMethod, $this);
     }
 }

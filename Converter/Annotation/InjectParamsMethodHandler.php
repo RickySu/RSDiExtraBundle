@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-class MethodInjectParamsHandler
+class InjectParamsMethodHandler
 {
     /** @var ParameterGuesser  */
     protected $parameterGuesser;

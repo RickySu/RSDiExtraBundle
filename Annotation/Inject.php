@@ -1,7 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Annotation;
 use RS\DiExtraBundle\Converter\ClassMeta;
-use RS\DiExtraBundle\Converter\Annotation\PropertyInjectHandler;
+use RS\DiExtraBundle\Converter\Annotation\InjectPropertyHandler;
 
 /**
  * @Annotation
@@ -17,6 +17,6 @@ final class Inject implements PropertyProcessorInterface
 
     public function handleProperty(ClassMeta $classMeta, \ReflectionProperty $reflectionProperty)
     {
-        (new PropertyInjectHandler())->handle($classMeta, $reflectionProperty, $this);
+        (new InjectPropertyHandler())->handle($classMeta, $reflectionProperty, $this);
     }
 }

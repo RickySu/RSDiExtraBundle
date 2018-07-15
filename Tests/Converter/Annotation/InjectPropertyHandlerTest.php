@@ -3,11 +3,11 @@ namespace RS\DiExtraBundle\Tests\Converter\Annotation;
 
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Converter\Annotation\ParameterGuesser;
-use RS\DiExtraBundle\Converter\Annotation\PropertyInjectHandler;
+use RS\DiExtraBundle\Converter\Annotation\InjectPropertyHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use RS\DiExtraBundle\Tests\BaseTestCase;
 
-class PropertyInjectHandlerTest extends BaseTestCase
+class InjectPropertyHandlerTest extends BaseTestCase
 {
     protected $property;
 
@@ -16,7 +16,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         //arrange
 
         //act
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
 
         //assert
         $this->assertInstanceOf(ParameterGuesser::class, $this->getObjectAttribute($propertyInjectHandler, 'parameterGuesser'));
@@ -72,7 +72,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $classMeta->class = $source['class'];
         $annotation = new Inject();
         $annotation->value = null;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
@@ -113,7 +113,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = false;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
@@ -157,7 +157,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = true;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
@@ -235,7 +235,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $classMeta->class = $source['class'];
         $annotation = new Inject();
         $annotation->value = null;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
@@ -276,7 +276,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = false;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
@@ -320,7 +320,7 @@ class PropertyInjectHandlerTest extends BaseTestCase
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = true;
-        $propertyInjectHandler = new PropertyInjectHandler();
+        $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
             ->setMethods(array('guessArgument', 'guessAnnotationArgument'))

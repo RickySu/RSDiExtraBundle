@@ -3,14 +3,14 @@ namespace RS\DiExtraBundle\Tests\Converter\Annotation;
 
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Annotation\InjectParams;
-use RS\DiExtraBundle\Converter\Annotation\MethodInjectParamsHandler;
+use RS\DiExtraBundle\Converter\Annotation\InjectParamsMethodHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use RS\DiExtraBundle\Tests\BaseTestCase;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-class InjectMethodParamsHandlerTest extends BaseTestCase
+class InjectParamsMethodHandlerTest extends BaseTestCase
 {
 
     public function test_convertAnnotationArguments_is_tagged()
@@ -27,7 +27,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param1']->value = '!tagged value1';
         $injectParams->params['param1']->required = false;
 
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -55,7 +55,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param1']->value = '%value1%';
         $injectParams->params['param1']->required = false;
 
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -83,7 +83,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $injectParams->params['param1']->value = 'value1';
         $injectParams->params['param1']->required = false;
 
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertAnnotationArguments', $injectParams);
@@ -148,7 +148,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->method('getNumberOfRequiredParameters')
             ->willReturn(count($parameters) - 1);
 
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'convertArguments', $reflectionMethod);
@@ -202,7 +202,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->expects($this->once())
             ->method('getParameters')
             ->willReturn($parameters);
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'mapArguments', $reflectionMethod, $arguments);
@@ -218,7 +218,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $classMeta->nextClassMeta = new ClassMeta();
         $classMeta->nextClassMeta->nextClassMeta = new ClassMeta();
         $reflectionMethod = new \ReflectionMethod($this, 'test_findFactoryClassMeta_not_found');
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'findFactoryClassMeta', $classMeta, $reflectionMethod);
@@ -236,7 +236,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $classMeta->nextClassMeta->nextClassMeta->factoryClass = self::class;
         $classMeta->nextClassMeta->nextClassMeta->factoryMethod = array(self::class, 'test_findFactoryClassMeta_not_found');
         $reflectionMethod = new \ReflectionMethod($this, 'test_findFactoryClassMeta_not_found');
-        $methodInjectParamsHandler = new MethodInjectParamsHandler();
+        $methodInjectParamsHandler = new InjectParamsMethodHandler();
 
         //act
         $result = $this->callObjectMethod($methodInjectParamsHandler, 'findFactoryClassMeta', $classMeta, $reflectionMethod);
@@ -264,7 +264,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->method('isConstructor')
             ->willReturn(true);
 
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
+        $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
             ->setMethods(array('findFactoryClassMeta', 'convertArguments', 'convertAnnotationArguments', 'mapArguments'))
             ->getMock();
 
@@ -315,7 +315,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->method('isConstructor')
             ->willReturn(false);
 
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
+        $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
             ->setMethods(array('findFactoryClassMeta', 'convertArguments', 'convertAnnotationArguments', 'mapArguments'))
             ->getMock();
 
@@ -370,7 +370,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
             ->method('isConstructor')
             ->willReturn(false);
 
-        $methodInjectParamsHandler = $this->getMockBuilder(MethodInjectParamsHandler::class)
+        $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
             ->setMethods(array('findFactoryClassMeta', 'convertArguments', 'convertAnnotationArguments', 'mapArguments'))
             ->getMock();
 

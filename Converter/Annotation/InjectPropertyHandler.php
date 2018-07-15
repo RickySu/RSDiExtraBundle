@@ -5,7 +5,7 @@ use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class PropertyInjectHandler
+class InjectPropertyHandler
 {
     /** @var ParameterGuesser  */
     protected $parameterGuesser;
