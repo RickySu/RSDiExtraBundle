@@ -21,6 +21,7 @@ class StaticFactory
             'fooNotPublicService' => $fooNotPublicService,
             'fooNotPublic' => $fooNotPublic,
             'foo' => $foo,
+            'id' => 'foo_static_factory',
         );
         return $object;
     }
@@ -38,6 +39,7 @@ class StaticFactory
             'fooNotPublicService' => $fooNotPublicService,
             'fooNotPublic' => $fooNotPublic,
             'foo' => $foo,
+            'id' => 'foo_static_factory2',
         );
         return $object;
     }
@@ -56,6 +58,7 @@ class StaticFactory
             'fooNotPublicService' => $fooNotPublicService,
             'fooNotPublic' => $fooNotPublic,
             'foo' => $foo,
+            'id' => 'foo_static_factory3',
         );
         return $object;
     }

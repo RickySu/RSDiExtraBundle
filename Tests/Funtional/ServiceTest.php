@@ -86,6 +86,7 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublicService']);
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublic']);
         $this->assertEquals('bar', $result['foo']);
+        $this->assertEquals('foo_static_factory', $result['id']);
     }
 
     public function test_staticFactoryService2()
@@ -100,6 +101,7 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublicService']);
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublic']);
         $this->assertEquals('bar', $result['foo']);
+        $this->assertEquals('foo_static_factory2', $result['id']);
     }
 
     public function test_staticFactoryService3()
@@ -114,6 +116,7 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublicService']);
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublic']);
         $this->assertEquals('bar', $result['foo']);
+        $this->assertEquals('foo_static_factory3', $result['id']);
     }
 
     public function test_serviceFactoryService()
@@ -128,6 +131,7 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublicService']);
         $this->assertInstanceOf(FooNotPublicService::class, $result['fooNotPublic']);
         $this->assertEquals('bar', $result['foo']);
+        $this->assertEquals('foo_service_factory', $result['id']);
     }
 
 }

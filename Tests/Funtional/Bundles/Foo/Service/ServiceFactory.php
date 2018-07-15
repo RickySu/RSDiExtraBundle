@@ -34,6 +34,7 @@ class ServiceFactory
     {
         $object = new \stdClass();
         $object->params = $this->params;
+        $object->params['id'] = 'foo_service_factory';
         return $object;
     }
 }
