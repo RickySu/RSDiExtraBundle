@@ -32,7 +32,7 @@ class MethodInjectParamsHandler
     {
         while($classMeta){
             if($classMeta->factoryMethod &&
-                $classMeta->class == $reflectionMethod->getDeclaringClass()->getName() &&
+                $classMeta->factoryClass == $reflectionMethod->getDeclaringClass()->getName() &&
                 $classMeta->factoryMethod[1] == $reflectionMethod->getName()
             ){
                 return $classMeta;

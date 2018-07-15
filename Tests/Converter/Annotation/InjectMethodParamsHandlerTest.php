@@ -233,7 +233,7 @@ class InjectMethodParamsHandlerTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->nextClassMeta = new ClassMeta();
         $classMeta->nextClassMeta->nextClassMeta = new ClassMeta();
-        $classMeta->nextClassMeta->nextClassMeta->class = self::class;
+        $classMeta->nextClassMeta->nextClassMeta->factoryClass = self::class;
         $classMeta->nextClassMeta->nextClassMeta->factoryMethod = array(self::class, 'test_findFactoryClassMeta_not_found');
         $reflectionMethod = new \ReflectionMethod($this, 'test_findFactoryClassMeta_not_found');
         $methodInjectParamsHandler = new MethodInjectParamsHandler();

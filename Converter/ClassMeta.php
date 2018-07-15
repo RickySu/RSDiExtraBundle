@@ -25,5 +25,6 @@ class ClassMeta
     public $synthetic;
     public $lazy;
     public $autoconfigured;
+    public $factoryClass;
     public $nextClassMeta;
 }

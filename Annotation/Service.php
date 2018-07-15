@@ -54,6 +54,9 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
 
     /** @var bool */
     public $autoconfigured;
+    
+    /** @var string */
+    public $class;
 
     public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)
     {

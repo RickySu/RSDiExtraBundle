@@ -10,6 +10,7 @@ class ServiceMethodHandler
     public function handle(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod, Service $annotation)
     {
         $factoryClassMeta = new ClassMeta();
+        $factoryClassMeta->factoryClass = $reflectionMethod->getDeclaringClass()->getName();
 
         if($classMeta->nextClassMeta){
             $factoryClassMeta->nextClassMeta = $classMeta->nextClassMeta;
@@ -33,7 +34,7 @@ class ServiceMethodHandler
         $factoryClassMeta->lazy = $annotation->lazy;
         $factoryClassMeta->autoconfigured = $annotation->autoconfigured;
 
-        $factoryClassMeta->class = $reflectionMethod->getDeclaringClass()->getName();
+        $factoryClassMeta->class = $annotation->class;
 
         if($factoryClassMeta->id == null){
             $factoryClassMeta->id = "{$classMeta->class}.{$reflectionMethod->getName()}";
@@ -47,26 +48,46 @@ class ServiceMethodHandler
             return;
         }
 
-
         $factoryClassMeta->factoryMethod = array(
             $reflectionMethod->getDeclaringClass()->getName(),
             $reflectionMethod->getName()
         );
 
-        if ($classMeta->methodCalls) {
-            foreach ($classMeta->methodCalls as $methodCall){
-                list($methodName, $arguments) = $methodCall;
-                if($methodName == $reflectionMethod->getName()){
-                    $factoryClassMeta->arguments = $arguments;
-                }
-            }
-            $classMeta->methodCalls = array();
-        }
+        $this->generateFactoryMethodCalls($classMeta, $reflectionMethod);
 
     }
 
     protected function isFactoryClass(ClassMeta $classMeta)
     {
         return $classMeta->id == null;
+    }
+
+    protected function generateFactoryMethodCalls(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
+    {
+        if(!$classMeta->methodCalls){
+            return;
+        }
+        $methodCalls = array();
+
+        foreach ($classMeta->methodCalls as $methodCall){
+            list($methodName, $arguments) = $methodCall;
+
+            if($methodName == $reflectionMethod->getName()) {
+                $factoryClassMeta = $classMeta->nextClassMeta;
+
+                /** @var ClassMeta $factoryClassMeta */
+                while ($factoryClassMeta) {
+                    list($factoryClassName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
+                    if ($factoryMethodName == $reflectionMethod->getName()) {
+                        $factoryClassMeta->arguments = $arguments;
+                        continue 2;
+                    }
+
+                    $factoryClassMeta->nextClassMeta;
+                }
+            }
+            $methodCalls[] = $methodCall;
+        }
+        $classMeta->methodCalls = $methodCalls;
     }
 }
