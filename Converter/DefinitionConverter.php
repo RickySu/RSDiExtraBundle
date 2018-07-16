@@ -33,6 +33,7 @@ class DefinitionConverter
     {
         $definitions = array();
         $classMeta = $this->parseClassFile($classFile);
+        $this->convertFactoryService($classMeta);
 
         while($classMeta) {
             if($definition = $this->convertDefinition($classMeta)){
@@ -143,6 +144,48 @@ class DefinitionConverter
             ->setFactory(array($generator->getFactoryClassFullName(), 'create'))
             ->setArguments(array_values($classMeta->controllerProperties))
             ->setPublic(true);
+    }
+
+    protected function convertFactoryService(ClassMeta $classMeta)
+    {
+        if(!$classMeta->nextClassMeta){
+            return;
+        }
+
+        $this->convertFactoryServiceInject($classMeta);
+    }
+
+    /**
+     * @param ClassMeta $classMeta
+     */
+    protected function convertFactoryServiceInject(ClassMeta $classMeta): void
+    {
+        if(!$classMeta->methodCalls){
+           return;
+        }
+
+        $methodCalls = array();
+
+        foreach ($classMeta->methodCalls as $methodCall) {
+            list($methodName, $arguments) = $methodCall;
+
+            $factoryClassMeta = $classMeta->nextClassMeta;
+
+            /** @var ClassMeta $factoryClassMeta */
+            while ($factoryClassMeta) {
+                list($factoryClassName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
+                if ($factoryMethodName == $methodName) {
+                    $factoryClassMeta->arguments = $arguments;
+                    continue 2;
+                }
+
+                $factoryClassMeta = $factoryClassMeta->nextClassMeta;
+            }
+
+            $methodCalls[] = $methodCall;
+        }
+
+        $classMeta->methodCalls = $methodCalls;
     }
 
 }

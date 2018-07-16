@@ -262,67 +262,10 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         $this->assertEquals($mappedArguments, $classMeta->arguments);
     }
 
-    public function test_handle_isFactory()
-    {
-        //arrange
-        $annotation = new InjectParams();
-        $factoryClassMeta = new ClassMeta();
-
-        $arguments = array('foo' => 'bad', 'bar' => 'bar');
-        $annotationArguments = array('foo' => 'foo', 'buz' => 'buz');
-        $mappedArguments = array('foo', 'bar');
-        $reflectionMethod = $this->getMockBuilder(\ReflectionMethod::class)
-            ->disableOriginalConstructor()
-            ->setMethods(array('isConstructor'))
-            ->getMock();
-
-        $reflectionMethod
-            ->expects($this->once())
-            ->method('isConstructor')
-            ->willReturn(false);
-
-        $classMeta = $this->getMockBuilder(ClassMeta::class)
-            ->setMethods(array('findFactoryClassMeta'))
-            ->getMock();
-
-        $classMeta
-            ->expects($this->once())
-            ->method('findFactoryClassMeta')
-            ->with($reflectionMethod)
-            ->willReturn($factoryClassMeta);
-
-        $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
-            ->setMethods(array('convertArguments', 'convertAnnotationArguments', 'mapArguments'))
-            ->getMock();
-
-        $methodInjectParamsHandler
-            ->expects($this->once())
-            ->method('convertArguments')
-            ->with($reflectionMethod)
-            ->willReturn($arguments);
-        $methodInjectParamsHandler
-            ->expects($this->once())
-            ->method('convertAnnotationArguments')
-            ->with($annotation)
-            ->willReturn($annotationArguments);
-        $methodInjectParamsHandler
-            ->expects($this->once())
-            ->method('mapArguments')
-            ->with($reflectionMethod, array('foo' => 'foo', 'bar' => 'bar', 'buz' => 'buz'))
-            ->willReturn($mappedArguments);
-
-        //act
-        $methodInjectParamsHandler->handle($classMeta, $reflectionMethod, $annotation);
-
-        //assert
-        $this->assertEquals($mappedArguments, $factoryClassMeta->arguments);
-    }
-
     public function test_handle_is_methodCalls()
     {
         //arrange
         $annotation = new InjectParams();
-        $factoryClassMeta = new ClassMeta();
         $arguments = array('foo' => 'bad', 'bar' => 'bar');
         $annotationArguments = array('foo' => 'foo', 'buz' => 'buz');
         $mappedArguments = array('foo', 'bar');
@@ -340,15 +283,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
             ->method('isConstructor')
             ->willReturn(false);
 
-        $classMeta = $this->getMockBuilder(ClassMeta::class)
-            ->setMethods(array('findFactoryClassMeta'))
-            ->getMock();
-
-        $classMeta
-            ->expects($this->once())
-            ->method('findFactoryClassMeta')
-            ->with($reflectionMethod)
-            ->willReturn(false);
+        $classMeta = new ClassMeta();
 
         $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
             ->setMethods(array('convertArguments', 'convertAnnotationArguments', 'mapArguments'))

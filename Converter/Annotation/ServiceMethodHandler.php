@@ -52,9 +52,6 @@ class ServiceMethodHandler
             $reflectionMethod->getDeclaringClass()->getName(),
             $reflectionMethod->getName()
         );
-
-        $this->generateFactoryMethodCalls($classMeta, $reflectionMethod);
-
     }
 
     protected function isFactoryClass(ClassMeta $classMeta)
@@ -62,32 +59,4 @@ class ServiceMethodHandler
         return $classMeta->id == null;
     }
 
-    protected function generateFactoryMethodCalls(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
-    {
-        if(!$classMeta->methodCalls){
-            return;
-        }
-        $methodCalls = array();
-
-        foreach ($classMeta->methodCalls as $methodCall){
-            list($methodName, $arguments) = $methodCall;
-
-            if($methodName == $reflectionMethod->getName()) {
-                $factoryClassMeta = $classMeta->nextClassMeta;
-
-                /** @var ClassMeta $factoryClassMeta */
-                while ($factoryClassMeta) {
-                    list($factoryClassName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
-                    if ($factoryMethodName == $reflectionMethod->getName()) {
-                        $factoryClassMeta->arguments = $arguments;
-                        continue 2;
-                    }
-
-                    $factoryClassMeta->nextClassMeta;
-                }
-            }
-            $methodCalls[] = $methodCall;
-        }
-        $classMeta->methodCalls = $methodCalls;
-    }
 }

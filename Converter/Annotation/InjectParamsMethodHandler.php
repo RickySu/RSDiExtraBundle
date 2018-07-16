@@ -73,11 +73,6 @@ class InjectParamsMethodHandler
             return;
         }
 
-        if ($factoryClassMeta = $classMeta->findFactoryClassMeta($reflectionMethod)) {
-            $factoryClassMeta->arguments = $mappedArguments;
-            return;
-        }
-
         $classMeta->methodCalls[] = array($reflectionMethod->getName(), $mappedArguments);
     }
 

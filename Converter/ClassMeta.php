@@ -29,18 +29,4 @@ class ClassMeta
     public $factoryTags = array();
     public $nextClassMeta;
 
-    public function findFactoryClassMeta(\ReflectionMethod $reflectionMethod)
-    {
-        $classMeta = $this;
-        while($classMeta){
-            if($classMeta->factoryMethod &&
-                $classMeta->factoryClass == $reflectionMethod->getDeclaringClass()->getName() &&
-                $classMeta->factoryMethod[1] == $reflectionMethod->getName()
-            ){
-                return $classMeta;
-            }
-            $classMeta = $classMeta->nextClassMeta;
-        }
-        return false;
-    }
 }
