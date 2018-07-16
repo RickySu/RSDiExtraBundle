@@ -2,7 +2,9 @@
 namespace RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service;
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Annotation\InjectParams;
+use RS\DiExtraBundle\Annotation\Observe;
 use RS\DiExtraBundle\Annotation\Service;
+use RS\DiExtraBundle\Tests\Funtional\CustomEvent;
 
 /**
  * @Service("foo_public")
@@ -81,6 +83,42 @@ class FooPublicService
     public function injectBarTag(iterable $bar)
     {
         $this->barTagServices = iterator_to_array($bar);
+    }
+
+    /**
+     * @param CustomEvent $event
+     * @Observe("custom_event", priority=10)
+     */
+    public function customEventListener1(CustomEvent $event)
+    {
+        $event->addCalls('customEventListener1');
+    }
+
+    /**
+     * @param CustomEvent $event
+     * @Observe("custom_event", priority=100)
+     */
+    public function customEventListener2(CustomEvent $event)
+    {
+        $event->addCalls('customEventListener2');
+    }
+
+    /**
+     * @param CustomEvent $event
+     * @Observe("custom_event")
+     */
+    public function customEventListener3(CustomEvent $event)
+    {
+        $event->addCalls('customEventListener3');
+    }
+
+    /**
+     * @param CustomEvent $event
+     * @Observe("custom_event", priority=5)
+     */
+    public function customEventListener4(CustomEvent $event)
+    {
+        $event->addCalls('customEventListener4');
     }
 
 }

@@ -1,3 +1,3 @@
 TestBundle:
     type: annotation
-    resource: '@BarBundle/Controller/'
+    resource: '@FooBundle/Controller/'

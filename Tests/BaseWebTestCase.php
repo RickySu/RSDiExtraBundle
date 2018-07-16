@@ -27,7 +27,7 @@ abstract class BaseWebTestCase extends WebTestCase
     {
         return new AppKernel(
             isset($options['config']) ? $options['config'] : 'test',
-            isset($options['debug']) ? (bool) $options['debug'] : true
+            isset($options['debug']) ? (bool) $options['debug'] : false
         );
     }
 }

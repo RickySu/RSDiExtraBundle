@@ -11,23 +11,26 @@ class ControllerGeneratorTest extends BaseTestCase
     {
         //arrange
         $className = 'foo';
-        $parameters = array('foo', 'bar');
+        $constructParameters = array('foo1', 'bar1');
+        $injectParameters = array('foo2', 'bar2');
+        $propertyParameters = array('foo3', 'bar3');
 
         //act
-        $generator = new ControllerGenerator($className, $parameters);
+        $generator = new ControllerGenerator($className, $constructParameters, $injectParameters, $propertyParameters);
 
         //assert
         $this->assertEquals($className, $this->getObjectAttribute($generator, 'className'));
-        $this->assertEquals($parameters, $this->getObjectAttribute($generator, 'parameters'));
+        $this->assertEquals($constructParameters, $this->getObjectAttribute($generator, 'constructParameters'));
+        $this->assertEquals($injectParameters, $this->getObjectAttribute($generator, 'injectParameters'));
+        $this->assertEquals($propertyParameters, $this->getObjectAttribute($generator, 'propertyParameters'));
     }
 
     public function test_getFactoryClassName()
     {
         //arrange
         $className = 'Foo\\Bar\\Buz';
-        $parameters = array('foo', 'bar');
 
-        $generator = new ControllerGenerator($className, $parameters);
+        $generator = new ControllerGenerator($className);
 
         //act
         $result = $generator->getFactoryClassName();
@@ -40,9 +43,8 @@ class ControllerGeneratorTest extends BaseTestCase
     {
         //arrange
         $className = 'Foo\\Bar\\Buz';
-        $parameters = array('foo', 'bar');
 
-        $generator = new ControllerGenerator($className, $parameters);
+        $generator = new ControllerGenerator($className);
 
         //act
         $result = $this->callObjectMethod($generator, 'getFactoryNamespace');
@@ -81,10 +83,15 @@ class ControllerGeneratorTest extends BaseTestCase
         //arrange
         $random = md5(microtime().rand());
         $className = Bar1::class;
-        $parameters = array('foo', 'bar', 'buz');
+        $constructParameters = array('foo', 'bar', 'buz');
+        $injectParameters = array(
+            'inject1' => array('foo1', 'bar1', 'buz1'),
+            'inject2' => array('foo2', 'bar2', 'buz2'),
+        );
+        $propertyParameters = array('foo', 'bar', 'buz');
         $generator = $this->getMockBuilder(ControllerGenerator::class)
             ->setMethods(array('getFactoryNamespace'))
-            ->setConstructorArgs(array($className, $parameters))
+            ->setConstructorArgs(array($className, $constructParameters, $injectParameters, $propertyParameters))
             ->getMock();
         $generator
             ->expects($this->atLeastOnce())
@@ -98,13 +105,16 @@ class ControllerGeneratorTest extends BaseTestCase
         file_put_contents($tmpName, $define);
         require_once $tmpName;
         unlink($tmpName);
-        $result = $classFactory::create('foo', 'bar', 'buz');
+        $result = $classFactory::create('foo', 'bar', 'buz', 'foo1', 'bar1', 'buz1', 'foo2', 'bar2', 'buz2', 'foo', 'bar', 'buz');
 
         //assert
         $this->assertInstanceOf($className, $result);
         $this->assertEquals('foo', $this->getObjectAttribute($result, 'foo'));
         $this->assertEquals('bar', $this->getObjectAttribute($result, 'bar'));
         $this->assertEquals('buz', $this->getObjectAttribute($result, 'buz'));
+        $this->assertEquals($constructParameters, $this->getObjectAttribute($result, 'constructParams'));
+        $this->assertEquals($injectParameters['inject1'], $this->getObjectAttribute($result, 'inject1Params'));
+        $this->assertEquals($injectParameters['inject2'], $this->getObjectAttribute($result, 'inject2Params'));
     }
 
     public function test_getDefine_null_parameters()
@@ -112,10 +122,15 @@ class ControllerGeneratorTest extends BaseTestCase
         //arrange
         $random = md5(microtime().rand());
         $className = Bar1::class;
-        $parameters = array();
+        $constructParameters = array('foo', 'bar', 'buz');
+        $injectParameters = array(
+            'inject1' => array('foo1', 'bar1', 'buz1'),
+            'inject2' => array('foo2', 'bar2', 'buz2'),
+        );
+        $propertyParameters = array();
         $generator = $this->getMockBuilder(ControllerGenerator::class)
             ->setMethods(array('getFactoryNamespace'))
-            ->setConstructorArgs(array($className, $parameters))
+            ->setConstructorArgs(array($className, $constructParameters, $injectParameters, $propertyParameters))
             ->getMock();
         $generator
             ->expects($this->atLeastOnce())
@@ -129,12 +144,15 @@ class ControllerGeneratorTest extends BaseTestCase
         file_put_contents($tmpName, $define);
         require_once $tmpName;
         unlink($tmpName);
-        $result = $classFactory::create('foo', 'bar', 'buz');
+        $result = $classFactory::create('foo', 'bar', 'buz', 'foo1', 'bar1', 'buz1', 'foo2', 'bar2', 'buz2');
 
         //assert
         $this->assertInstanceOf($className, $result);
         $this->assertNull($this->getObjectAttribute($result, 'foo'));
         $this->assertNull($this->getObjectAttribute($result, 'bar'));
         $this->assertNull($this->getObjectAttribute($result, 'buz'));
+        $this->assertEquals($constructParameters, $this->getObjectAttribute($result, 'constructParams'));
+        $this->assertEquals($injectParameters['inject1'], $this->getObjectAttribute($result, 'inject1Params'));
+        $this->assertEquals($injectParameters['inject2'], $this->getObjectAttribute($result, 'inject2Params'));
     }
 }

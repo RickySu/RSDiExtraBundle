@@ -135,15 +135,35 @@ class DefinitionConverter
     {
         $outputPath = $this->cacheDir."/controllers";
         @mkdir($outputPath, 0777, true);
-        $generator = new ControllerGenerator($classMeta->class, array_keys($classMeta->controllerProperties));
+        $injectParameters = array_combine(array_column($classMeta->methodCalls, 0), array_column($classMeta->methodCalls, 1));
+        $generator = new ControllerGenerator(
+            $classMeta->class,
+            array_keys($classMeta->arguments),
+            $injectParameters,
+            array_keys($classMeta->controllerProperties)
+        );
         $filePath = "$outputPath/{$generator->getFactoryClassName()}.php";
         file_put_contents($filePath, $generator->getDefine());
         include_once $filePath;
         $definition
             ->setFile($filePath)
             ->setFactory(array($generator->getFactoryClassFullName(), 'create'))
-            ->setArguments(array_values($classMeta->controllerProperties))
             ->setPublic(true);
+
+        foreach ($classMeta->arguments as $argument){
+            $definition->addArgument($argument);
+        }
+
+        foreach ($injectParameters as $arguments){
+            foreach ($arguments as $argument) {
+                $definition->addArgument($argument);
+            }
+        }
+
+        foreach ($classMeta->controllerProperties as $argument){
+            $definition->addArgument($argument);
+        }
+
     }
 
     protected function convertFactoryService(ClassMeta $classMeta)

@@ -6,13 +6,26 @@ class ControllerGenerator
 {
     const IDENT = '    ';
     protected $className;
-    /** @var array */
-    protected $parameters;
 
-    public function __construct($className, $parameters)
+    protected $paramererCount;
+
+    /** @var array */
+    protected $propertyParameters;
+    /** @var array  */
+    protected $constructParameters;
+    /** @var array  */
+    protected $injectParameters;
+
+    protected $injectParameterStart = 0;
+    protected $propertyParameterStart = 0;
+
+    public function __construct($className, array $constructParameters = array(), array $injectParameters = array(), array $propertyParameters = array())
     {
         $this->className = $className;
-        $this->parameters = $parameters;
+        $this->constructParameters = $constructParameters;
+        $this->injectParameters = $injectParameters;
+        $this->propertyParameters = $propertyParameters;
+        $this->initParameters();
     }
 
     protected function getFactoryNamespace()
@@ -38,9 +51,10 @@ namespace {$this->getFactoryNamespace()};
 
 class {$this->getFactoryClassName()}
 {
-    public static function create({$this->getInjectParameters()})
+    public static function create({$this->getParametersDefine(0, $this->paramererCount)})
     {
-        \$controller = new \\{$this->className}();
+{$this->getConstructDefine()}
+{$this->getInjectMethodDefines()}
 {$this->getSetterDefine()}
         return \$controller;
     }
@@ -55,25 +69,25 @@ class {$this->getFactoryClassName()}
 EOT;
     }
 
-    protected function getInjectParameters()
+    protected function getParametersDefine($parametersStart, $count)
     {
         $parameters = array();
-        foreach ($this->parameters as $parameter){
-            $parameters[] = "\$$parameter";
+        for ($i = $parametersStart; $i < $parametersStart + $count; $i++){
+            $parameters[] = "\$p$i";
         }
         return implode(', ', $parameters);
     }
 
     protected function getSetterDefine()
     {
-        if(count($this->parameters) == 0){
+        if(count($this->propertyParameters) == 0){
             return;
         }
 
         $injects = array();
 
-        foreach($this->parameters as $parameter){
-            $injects[] = "{$this->getIdent(2)}self::setProperty(\$controller, \$reflectClass, '$parameter', \$$parameter);";
+        for ($i = $this->propertyParameterStart; $i < $this->paramererCount; $i++){
+            $injects[] = "{$this->getIdent(2)}self::setProperty(\$controller, \$reflectClass, '{$this->propertyParameters[$i - $this->propertyParameterStart]}', \$p$i);";
         }
 
         return "{$this->getIdent(2)}\$reflectClass = new \ReflectionClass(\$controller);\n".implode("\n", $injects);
@@ -83,4 +97,46 @@ EOT;
     {
         return str_repeat(self::IDENT, $tab);
     }
+
+    protected function initParameters()
+    {
+        $this->injectParameterStart = count($this->constructParameters);
+
+        $this->propertyParameterStart  = $this->injectParameterStart;
+
+        foreach ($this->injectParameters as $methodName => $parameters){
+            $this->propertyParameterStart += count($parameters);
+        }
+
+        $this->paramererCount = $this->propertyParameterStart + count($this->propertyParameters);
+    }
+
+    protected function getConstructDefine()
+    {
+        $constructParameters = array();
+
+        for($i = 0; $i < count($this->constructParameters); $i++){
+            $constructParameters[] = "\$p$i";
+        }
+        $constructParametersString = implode(', ', $constructParameters);
+
+        return <<<EOT
+{$this->getIdent(2)}\$controller = new \\{$this->className}($constructParametersString);
+EOT;
+
+    }
+
+    protected function getInjectMethodDefines()
+    {
+        $parametersStart = $this->injectParameterStart;
+
+        $methods = array();
+        foreach ($this->injectParameters as $methodName => $parameters){
+            $methods[] = "{$this->getIdent(2)}\$controller->$methodName({$this->getParametersDefine($parametersStart, count($parameters))});";
+            $parametersStart += count($parameters);
+        }
+
+        return implode("\n", $methods);
+    }
+
 }
