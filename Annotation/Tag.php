@@ -6,7 +6,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
 
 /**
  * @Annotation
- * @Target("CLASS", "METHOD")
+ * @Target({"CLASS", "METHOD"})
  */
 final class Tag implements ClassProcessorInterface, MethodProcessorInterface
 {

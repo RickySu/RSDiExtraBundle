@@ -5,11 +5,15 @@ namespace RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service;
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Annotation\InjectParams;
 use RS\DiExtraBundle\Annotation\Service;
+use RS\DiExtraBundle\Annotation\Tag;
 
 class StaticFactory
 {
     /**
+     * @Tag(name="foo_tag")
+     * @Tag(name="foo_tag", attributes={"a": "a"})
      * @Service("foo_static_factory", class=\stdClass::class)
+     * @Tag(name="bar_tag")
      * @InjectParams({
      *     "foo" = @Inject("%foo%"),
      * })
@@ -30,7 +34,9 @@ class StaticFactory
      * @InjectParams({
      *     "foo" = @Inject("%foo%"),
      * })
+     * @Tag(name="foo_tag")
      * @Service("foo_static_factory2", class=\stdClass::class)
+     * @Tag(name="bar_tag")
      */
     public static function create2(FooNotPublicService $fooNotPublicService, $fooNotPublic, $foo)
     {
@@ -50,6 +56,7 @@ class StaticFactory
      *     "foo" = @Inject("%foo%"),
      * })
      * @Service("foo_static_factory3", class=\stdClass::class)
+     * @Tag(name="foo_tag")
      */
     public static function create3($foo, $fooNotPublic, FooNotPublicService $fooNotPublicService)
     {

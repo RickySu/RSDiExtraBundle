@@ -4,6 +4,7 @@ namespace RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service;
 use RS\DiExtraBundle\Annotation\Inject;
 use RS\DiExtraBundle\Annotation\InjectParams;
 use RS\DiExtraBundle\Annotation\Service;
+use RS\DiExtraBundle\Annotation\Tag;
 
 /**
  * @Service()
@@ -29,6 +30,7 @@ class ServiceFactory
     /**
      *
      * @Service("foo_service_factory", class=\stdClass::class)
+     * @Tag("foo_tag", attributes={"foo": "foo"})
      */
     public function create()
     {

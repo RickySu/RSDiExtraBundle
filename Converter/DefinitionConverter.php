@@ -153,12 +153,13 @@ class DefinitionConverter
         }
 
         $this->convertFactoryServiceInject($classMeta);
+        $this->convertFactoryServiceTag($classMeta);
     }
 
     /**
      * @param ClassMeta $classMeta
      */
-    protected function convertFactoryServiceInject(ClassMeta $classMeta): void
+    protected function convertFactoryServiceInject(ClassMeta $classMeta)
     {
         if(!$classMeta->methodCalls){
            return;
@@ -173,7 +174,7 @@ class DefinitionConverter
 
             /** @var ClassMeta $factoryClassMeta */
             while ($factoryClassMeta) {
-                list($factoryClassName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
+                list($serviceName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
                 if ($factoryMethodName == $methodName) {
                     $factoryClassMeta->arguments = $arguments;
                     continue 2;
@@ -186,6 +187,34 @@ class DefinitionConverter
         }
 
         $classMeta->methodCalls = $methodCalls;
+    }
+
+    protected function convertFactoryServiceTag(ClassMeta $classMeta)
+    {
+        if(!$classMeta->factoryTags){
+            return;
+        }
+
+        foreach ($classMeta->factoryTags as $factory => $tags){
+            list($factoryClass, $factoryMethod) = explode(':', $factory);
+            $factoryClassMeta = $classMeta->nextClassMeta;
+
+            /** @var ClassMeta $factoryClassMeta */
+            while ($factoryClassMeta) {
+                list($serviceName, $factoryMethodName) = $factoryClassMeta->factoryMethod;
+
+                if("{$factoryClassMeta->factoryClass}:$factoryMethodName" == $factory){
+                    foreach ($tags as $tagName => $tag){
+                        if(!isset($factoryClassMeta->tags[$tagName])){
+                            $factoryClassMeta->tags[$tagName] = array();
+                        }
+                        $factoryClassMeta->tags[$tagName] = array_merge($factoryClassMeta->tags[$tagName], $tag);
+                    }
+                }
+                $factoryClassMeta = $factoryClassMeta->nextClassMeta;
+            }
+        }
+        $classMeta->factoryTags = array();
     }
 
 }

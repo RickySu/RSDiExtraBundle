@@ -24,6 +24,9 @@ class FooPublicService
     public $constructParams = array();
     public $injectParams = array();
 
+    public $fooTagServices = array();
+
+    public $barTagServices = array();
     /**
      * FooPublicService constructor.
      * @param FooPublicService $fooPublicService
@@ -42,7 +45,6 @@ class FooPublicService
         );
     }
 
-
     /**
      * FooPublicService constructor.
      * @param FooPublicService $fooPublicService
@@ -59,6 +61,26 @@ class FooPublicService
             'fooNotPublic' => $fooNotPublic,
             'foo' => $foo,
         );
+    }
+
+    /**
+     * @InjectParams({
+     *     "foo" = @Inject("!tagged foo_tag"),
+     * })
+     */
+    public function injectFooTag(iterable $foo)
+    {
+        $this->fooTagServices = iterator_to_array($foo);
+    }
+
+    /**
+     * @InjectParams({
+     *     "bar" = @Inject("!tagged bar_tag"),
+     * })
+     */
+    public function injectBarTag(iterable $bar)
+    {
+        $this->barTagServices = iterator_to_array($bar);
     }
 
 }

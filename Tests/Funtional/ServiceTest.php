@@ -134,4 +134,42 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertEquals('foo_service_factory', $result['id']);
     }
 
+    public function test_taggedService_foo()
+    {
+        //arrange
+        //act
+        $service = self::$container->get('foo_public');
+        $ids = array_map(function($service){
+            return $service->params['id'];
+        }, $service->fooTagServices);
+        sort($ids);
+
+        //assert
+        $this->assertCount(4, $ids);
+        $this->assertEquals(array(
+            'foo_service_factory',
+            'foo_static_factory',
+            'foo_static_factory2',
+            'foo_static_factory3'
+        ), $ids);
+    }
+
+    public function test_taggedService_bar()
+    {
+        //arrange
+        //act
+        $service = self::$container->get('foo_public');
+        $ids = array_map(function($service){
+            return $service->params['id'];
+        }, $service->barTagServices);
+        sort($ids);
+
+        //assert
+        $this->assertCount(3, $ids);
+        $this->assertEquals(array(
+            'foo_not_public',
+            'foo_static_factory',
+            'foo_static_factory2',
+        ), $ids);
+    }
 }
