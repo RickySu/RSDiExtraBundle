@@ -1,7 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Annotation;
 
-use RS\DiExtraBundle\Converter\Annotation\FormTypeClassHandler;
+use RS\DiExtraBundle\Converter\Annotation\ValidatorClassHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
 
 /**
@@ -15,6 +15,6 @@ final class Validator implements ClassProcessorInterface
 
     public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)
     {
-        (new FormTypeClassHandler())->handle($classMeta, $reflectionClass, $this);
+        (new ValidatorClassHandler())->handle($classMeta, $reflectionClass, $this);
     }
 }
