@@ -1,5 +1,5 @@
 {
-    "name": "rs/di-extra-bundle",
+    "name": "rickysu/di-extra-bundle",
     "description": "Allows to configure dependency injection using annotations",
     "type": "symfony-bundle",
     "license": "MIT",
