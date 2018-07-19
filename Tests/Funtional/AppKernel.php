@@ -32,7 +32,6 @@ class AppKernel extends Kernel
             new FrameworkBundle(),
             new DoctrineBundle(),
             new RSDiExtraBundle(),
-            new SensioFrameworkExtraBundle(),
             new FooBundle(),
         ];
     }

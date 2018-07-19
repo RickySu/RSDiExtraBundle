@@ -27,9 +27,6 @@ doctrine:
                 is_bundle: true
                 type: annotation
 
-sensio_framework_extra:
-    request: { converters: false }
-
 parameters:
     foo:              bar
     kernel.debug:    true
