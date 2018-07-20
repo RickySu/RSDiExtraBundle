@@ -25,13 +25,29 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class ProductRepository extends ServiceEntityRepository implements ContainerAwareInterface
 {
+    public $injectParams;
+
+    public $container;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @InjectParams()
+     */
+    public function injectParams($fooStaticFactory, $fooStaticFactory2, $fooStaticFactory3)
+    {
+        $this->injectParams = array(
+            'fooStaticFactory' => $fooStaticFactory,
+            'fooStaticFactory2' => $fooStaticFactory2,
+            'fooStaticFactory3' => $fooStaticFactory3,
+        );
+    }
+
     public function setContainer(ContainerInterface $container = null)
     {
-
+        $this->container = $container;
     }
 }

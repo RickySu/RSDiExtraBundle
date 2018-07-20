@@ -8,6 +8,9 @@ use RS\DiExtraBundle\Annotation\Service;
 use RS\DiExtraBundle\Annotation\Tag;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use RS\DiExtraBundle\Exception\InvalidAnnotationException;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrineRepositoryClassHandler
 {
@@ -24,6 +27,10 @@ class DoctrineRepositoryClassHandler
             $serviceAnnotation->private = true;
             $serviceAnnotation->autowire = true;
             (new ServiceClassHandler())->handle($classMeta, $reflectionClass, $serviceAnnotation);
+        }
+
+        if($reflectionClass->isSubclassOf(ContainerAwareInterface::class)){
+            $classMeta->methodCalls[] = array('setContainer', array(new Reference('service_container', ContainerInterface::NULL_ON_INVALID_REFERENCE)));
         }
 
         $tagAnnotation = new Tag();
