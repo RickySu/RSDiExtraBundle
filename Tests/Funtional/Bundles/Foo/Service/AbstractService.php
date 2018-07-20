@@ -7,6 +7,8 @@ use RS\DiExtraBundle\Annotation\InjectParams;
 
 abstract class AbstractService
 {
+    use Traits\InjectFooStaticFactoryTrait;
+
     public $fooPublicService;
     public $foo;
     public $foo2;

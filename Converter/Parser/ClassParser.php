@@ -53,6 +53,7 @@ class ClassParser
     protected function parseClass(ClassMeta $classMeta)
     {
         $this->parseParent($classMeta);
+        $this->parseTraits($classMeta);
         foreach($this->annotationReader->getClassAnnotations($this->reflectionClass) as $annotation){
             if($annotation instanceof ClassProcessorInterface){
                 $classMeta->class = $this->reflectionClass->getName();
@@ -86,6 +87,18 @@ class ClassParser
     protected function createPropertyParser(\ReflectionProperty $reflectionProperty)
     {
         return new PropertyParser($this->annotationReader, $reflectionProperty);
+    }
+
+    protected function parseTraits(ClassMeta $classMeta)
+    {
+        if(!$this->reflectionClass->getTraits()){
+            return;
+        }
+
+        foreach($this->reflectionClass->getTraits() as $traitReflection){
+            $classParser = new static($this->annotationReader, $traitReflection);
+            $classParser->parse($classMeta);
+        }
     }
 
 }

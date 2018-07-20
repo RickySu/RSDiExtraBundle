@@ -309,12 +309,17 @@ class ClassParserTest extends BaseTestCase
 
         $classParser = $this->getMockBuilder(ClassParser::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('parseParent'))
+            ->setMethods(array('parseParent', 'parseTraits'))
             ->getMock();
 
         $classParser
             ->expects($this->once())
             ->method('parseParent')
+            ->with($classMeta);
+
+        $classParser
+            ->expects($this->once())
+            ->method('parseTraits')
             ->with($classMeta);
 
         $this->setObjectAttribute($classParser, 'reflectionClass', $reflectionClass);

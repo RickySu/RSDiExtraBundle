@@ -10,6 +10,8 @@ use RS\DiExtraBundle\Annotation\Service;
  */
 class ExtendService extends AbstractService
 {
+    use Traits\InjectFooStaticFactory2Trait;
+
     public $fooNotPublicService;
 
     /**

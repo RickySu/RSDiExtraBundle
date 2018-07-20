@@ -41,4 +41,16 @@ class ServiceExtendTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooNotPublicService::class, $service->foo2);
         $this->assertNull($service->foo2Origin);
     }
+
+    public function test_traits_inject()
+    {
+        //arrange
+
+        //act
+        $service = self::$container->get('extend_service');
+
+        //assert
+        $this->assertEquals('foo_static_factory', $service->fooStaticFactory->params['id']);
+        $this->assertEquals('foo_static_factory2', $service->fooStaticFactory2->params['id']);
+    }
 }
