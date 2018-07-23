@@ -15,7 +15,6 @@ class FormTypeClassHandlerTest extends BaseTestCase
         $classMeta->class = self::class;
 
         $formType = new FormType();
-        $formType->alias = 'foo';
 
         $formTypeHandler = new FormTypeClassHandler();
 
@@ -27,7 +26,7 @@ class FormTypeClassHandlerTest extends BaseTestCase
         $this->assertEquals(self::class, $classMeta->id);
         $this->assertEquals(array(
             'form.type' => array(
-                array('alias' => 'foo'),
+                array(),
             ),
         ), $classMeta->tags);
     }
@@ -40,7 +39,6 @@ class FormTypeClassHandlerTest extends BaseTestCase
         $classMeta->id = 'foo';
 
         $formType = new FormType();
-        $formType->alias = 'foo';
 
         $formTypeHandler = new FormTypeClassHandler();
 
@@ -51,7 +49,7 @@ class FormTypeClassHandlerTest extends BaseTestCase
         $this->assertEquals('foo', $classMeta->id);
         $this->assertEquals(array(
             'form.type' => array(
-                array('alias' => 'foo'),
+                array(),
             ),
         ), $classMeta->tags);
     }
