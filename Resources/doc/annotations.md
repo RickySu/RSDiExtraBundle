@@ -282,3 +282,214 @@ class MyListener
 
 You can use a string or conatant as event name.
 
+
+### @Validator
+
+Register a constraint validator.
+
+```php
+<?php
+namespace App\Validator;
+
+use RS\DiExtraBundle\Annotation\Inject;
+use RS\DiExtraBundle\Annotation\InjectParams;
+use RS\DiExtraBundle\Annotation\Validator;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+
+/**
+ * @Annotation
+ * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ */
+class Foo extends Constraint
+{
+    public $message = 'This value should must be %value%';
+    
+    public function validatedBy()
+    {
+        return 'foo';
+    }
+}
+
+/**
+ * @Validator("foo")
+ */
+class FooValidator extends ConstraintValidator
+{
+    protected $foo;
+
+    /**
+     * @InjectParams({
+     *     "foo" = @Inject("%foo%")
+     * })
+     */
+    public function inject($foo)
+    {
+        $this->foo = $foo;
+    }
+
+    public function validate($value, Constraint $constraint)
+    {
+        if($value != $this->foo){
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('%value%', $this->foo)
+                ->addViolation();
+        }
+    }
+}
+```
+
+#### @Validator implies @Service if you do not explicitly defined.
+
+
+### @FormType
+
+Register a custom form type
+
+```php
+<?php
+namespace App\Form;
+
+use RS\DiExtraBundle\Annotation\FormType;
+use Symfony\Component\Form\AbstractType;
+
+
+/**
+ * @FormType
+ */
+class MyFormType extends AbstractType
+{
+    // ...
+}
+
+
+// Controller
+$form = $this->createForm(MyFormType::class);
+```
+
+#### @FormType implies @Service if you do not explicitly defined.
+
+### @DoctrineRepository
+
+Register a Doctrine Repositoty
+
+```php
+<?php
+namespace App\Repository;
+
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use RS\DiExtraBundle\Annotation\DoctrineRepository;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use RS\DiExtraBundle\Annotation\Inject;
+use RS\DiExtraBundle\Annotation\InjectParams;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+/**
+ * 
+ * @DoctrineRepository()
+ */
+class ProductRepository extends ServiceEntityRepository implements ContainerAwareInterface
+{
+    protected $container;
+    
+    /**
+     * @InjectParams({
+     *     "foo" = @Inject("%foo%")       
+     * })
+     */
+    public function injectEventDispatcher($foo, EventDispatcherInterface $eventDispatcher, $session)
+    {
+        
+    }
+    
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+}
+
+//get repository
+$repository = $container->get('doctrine')->getRepository(Product::class);
+```
+
+#### @DoctrineRepository implies @Service if you do not explicitly defined.
+
+Automatically inject container if you implements ContainerAwareInterface.
+Or use @InjectParams explicitly.
+
+
+### @DoctrineListener or @DoctrineMongoDBListener
+
+Register a Doctrine ORM or Doctrine MongoDB ODM listener
+
+```php
+<?php
+namespace App\Listener;
+
+use RS\DiExtraBundle\Annotation\DoctrineListener;
+
+/**
+ * @DoctrineListener(
+ *     events = {"prePersist", "preUpdate"},
+ *     connection = "default",
+ *     lazy = true,
+ *     priority = 0,
+ * )
+ */
+class MyListener
+{
+    
+}
+```
+
+#### @DoctrineListener or @DoctrineMongoDBListener implies @Service if you do not explicitly defined.
+
+
+### Custom Annotations
+
+An easy way to create custom annotation.
+
+```php
+<?php
+namespace App\Annotation;
+
+use RS\DiExtraBundle\Annotation\ClassProcessorInterface;
+use RS\DiExtraBundle\Annotation\MethodProcessorInterface;
+use RS\DiExtraBundle\Annotation\PropertyProcessorInterface;
+use RS\DiExtraBundle\Converter\ClassMeta;
+
+/**
+ * @Annotation
+ * @Target({"CLASS", "METHOD", "PROPERTY"})
+ */
+class MyTwig implements ClassProcessorInterface, MethodProcessorInterface, PropertyProcessorInterface
+{
+    public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)
+    {
+        //add define to $classMeta
+        //register twig extension
+        $classMeta->tags[] = 'twig_extension';
+        $classMeta->public = false;
+    }
+
+    public function handleMethod(ClassMeta $classMeta, \ReflectionMethod $reflectionMethod)
+    {
+        //add define to $classMeta
+    }
+
+    public function handleProperty(ClassMeta $classMeta, \ReflectionProperty $reflectionProperty)
+    {
+        //add define to $classMeta
+    }
+
+}
+
+/**
+ * @MyTwig
+ */
+class MyTwigExtension
+{
+    
+}
+```

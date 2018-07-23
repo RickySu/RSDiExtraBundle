@@ -9,9 +9,6 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  */
 final class FormType implements ClassProcessorInterface
 {
-    /** @var string */
-    public $alias;
-
     public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)
     {
         (new FormTypeClassHandler())->handle($classMeta, $reflectionClass, $this);

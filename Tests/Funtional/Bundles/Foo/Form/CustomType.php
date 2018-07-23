@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @FormType()
+ * @FormType
  */
 class CustomType extends AbstractType implements DataTransformerInterface
 {

@@ -18,9 +18,6 @@ class FormTypeClassHandler
 
         $tagAnnotation = new Tag();
         $tagAnnotation->name = 'form.type';
-        $tagAnnotation->attributes = array(
-            'alias' => $formTypeAnnotation->alias,
-        );
         (new TagClassHandler())->handle($classMeta, $reflectionClass, $tagAnnotation);
     }
 }
