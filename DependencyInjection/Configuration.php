@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('rs_di_extra', 'array');
         $builder
             ->root('rs_di_extra', 'array')
                 ->children()

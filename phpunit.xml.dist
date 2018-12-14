@@ -12,6 +12,10 @@
          bootstrap="./Tests/bootstrap.php"
 >
 
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+    </php>
+
     <testsuites>
         <testsuite name="DiExtraBundle Test Suite">
             <directory>./Tests</directory>
