@@ -14,9 +14,20 @@ class ControllerGeneratorTest extends BaseTestCase
         $constructParameters = array('foo1', 'bar1');
         $injectParameters = array('foo2', 'bar2');
         $propertyParameters = array('foo3', 'bar3');
+        $generator = $this->getMockBuilder(ControllerGenerator::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('initParameters'))
+            ->getMock();
+        $generator
+            ->expects($this->once())
+            ->method('initParameters')
+            ;
+
+        $reflect = new \ReflectionClass(ControllerGenerator::class);
+        $constructor = $reflect->getConstructor();
 
         //act
-        $generator = new ControllerGenerator($className, $constructParameters, $injectParameters, $propertyParameters);
+        $constructor->invoke($generator, $className, $constructParameters, $injectParameters, $propertyParameters);
 
         //assert
         $this->assertEquals($className, $this->getObjectAttribute($generator, 'className'));
