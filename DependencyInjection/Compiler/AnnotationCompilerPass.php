@@ -68,11 +68,16 @@ class AnnotationCompilerPass implements CompilerPassInterface
         $this->addDirectoriesResources($container, $directories);
         foreach ($this->findClassFiles($directories) as $classFile){
             $container->addResource(new FileResource($classFile));
-            foreach ($converter->convert($classFile) as $id => $definition){
-                $container->setDefinition($id, $definition);
-                if($id != $definition->getClass()) {
-                    $container->setAlias($definition->getClass(), $id);
+            try {
+                foreach ($converter->convert($classFile) as $id => $definition) {
+                    $container->setDefinition($id, $definition);
+                    if ($id != $definition->getClass()) {
+                        $container->setAlias($definition->getClass(), $id);
+                    }
                 }
+            }
+            catch (\RuntimeException $e) {
+                continue;
             }
         }
     }
