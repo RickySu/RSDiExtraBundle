@@ -2,6 +2,7 @@
 namespace RS\DiExtraBundle\Converter;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Converter\Parser\ClassParser;
@@ -27,6 +28,7 @@ class DefinitionConverter
         $parser = new DocParser();
         $parser->setIgnoreNotImportedAnnotations(true);
         $this->reader = new AnnotationReader($parser);
+        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**
