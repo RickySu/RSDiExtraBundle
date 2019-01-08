@@ -8,6 +8,7 @@ use RS\DiExtraBundle\Annotation\Tag;
 
 /**
  * @Service()
+ * @notImportedAnnotations
  */
 class ServiceFactory
 {

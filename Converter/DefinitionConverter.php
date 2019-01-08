@@ -1,6 +1,8 @@
 <?php
 namespace RS\DiExtraBundle\Converter;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Converter\Parser\ClassParser;
 use RS\DiExtraBundle\Generator\Factory\ControllerGenerator;
@@ -18,11 +20,13 @@ class DefinitionConverter
     /** @var string */
     protected $cacheDir;
 
-    public function inject(Reader $reader, $environment, $cacheDir)
+    public function inject($environment, $cacheDir)
     {
-        $this->reader = $reader;
         $this->environment = $environment;
         $this->cacheDir = $cacheDir;
+        $parser = new DocParser();
+        $parser->setIgnoreNotImportedAnnotations(true);
+        $this->reader = new AnnotationReader($parser);
     }
 
     /**

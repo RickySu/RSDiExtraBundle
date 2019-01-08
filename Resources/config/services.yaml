@@ -5,6 +5,5 @@ services:
             -
                 method:       inject
                 arguments:
-                    -          '@annotation_reader'
                     -          '%kernel.environment%'
                     -          '%kernel.cache_dir%'
