@@ -65,6 +65,7 @@ class ClassFileFinderTest extends BaseTestCase
             realpath(__DIR__."/../Fixtures/Foo/Excludes/Bar1Exclude.php"),
             realpath(__DIR__."/../Fixtures/Foo/Excludes/Bar2Exclude.php"),
         );
+        sort($expected);
         $dir = __DIR__."/../Fixtures/Foo";
         $classFinder = new ClassFileFinder($dir);
 
@@ -87,6 +88,7 @@ class ClassFileFinderTest extends BaseTestCase
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar1.php"),
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar2.php"),
         );
+        sort($expected);
         $dir = __DIR__."/../Fixtures/Foo";
         $classFinder = new ClassFileFinder($dir);
         $classFinder->setExcludePathnamePattern(array("*Exclude.php"));
@@ -109,6 +111,7 @@ class ClassFileFinderTest extends BaseTestCase
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar1.php"),
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar2.php"),
         );
+        sort($expected);
         $dir = __DIR__."/../Fixtures/Foo";
         $classFinder = new ClassFileFinder($dir);
         $classFinder->setExcludeDirPattern(array("Excludes"));
@@ -116,6 +119,7 @@ class ClassFileFinderTest extends BaseTestCase
         //act
         $result = iterator_to_array($classFinder->find(), false);
         sort($result);
+
         //assert
         $this->assertEquals($expected, $result);
     }
@@ -127,6 +131,7 @@ class ClassFileFinderTest extends BaseTestCase
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar1.php"),
             realpath(__DIR__."/../Fixtures/Foo/Buz/Bar2.php"),
         );
+        sort($expected);
         $dir = __DIR__."/../Fixtures/Foo";
         $pattern = '/Buz/';
         $classFinder = new ClassFileFinder($dir);

@@ -184,18 +184,22 @@ class AnnotationCompilerPassTest extends BaseTestCase
             __DIR__.'/../../Fixtures/Foo/Buz',
             __DIR__.'/../../Fixtures/Foo/Excludes',
         );
-        $annotationCompilerPass = new AnnotationCompilerPass();
-
-        //act
-        $result = $this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, null, '*Exclude.php');
-
-        //assert
-        $this->assertEquals(array(
+        $expected = array(
             realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar2.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar2.php'),
-        ), iterator_to_array($result, false));
+        );
+        sort($expected);
+
+        $annotationCompilerPass = new AnnotationCompilerPass();
+
+        //act
+        $result = iterator_to_array($this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, null, '*Exclude.php'), false);
+        sort($result);
+
+        //assert
+        $this->assertEquals($expected, $result);
     }
 
     public function test_findClassFiles_exclude_dir()
@@ -204,20 +208,23 @@ class AnnotationCompilerPassTest extends BaseTestCase
         $directories = array(
             __DIR__.'/../../Fixtures/Foo',
         );
-        $annotationCompilerPass = new AnnotationCompilerPass();
-
-        //act
-        $result = $this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, 'Excludes', null);
-
-        //assert
-        $this->assertEquals(array(
+        $expected = array(
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar2.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar2.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Bar2.php'),
-        ), iterator_to_array($result, false));
+        );
+        sort($expected);
+        $annotationCompilerPass = new AnnotationCompilerPass();
+
+        //act
+        $result = iterator_to_array($this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, 'Excludes', null), false);
+        sort($result);
+
+        //assert
+        $this->assertEquals($expected, $result);
     }
 
     public function test_handleClassFiles()
