@@ -27,5 +27,7 @@ class RSDiExtraExtension extends Extension
         $container->setParameter('rs_di_extra.bundles', $config['locations']['bundles']);
         $container->setParameter('rs_di_extra.disallow_bundles', array_merge(array('RSDiExtraBundle'), $config['locations']['disallow_bundles']));
         $container->setParameter('rs_di_extra.directories', $config['locations']['directories']);
+        $container->setParameter('rs_di_extra.exclude_directories', $config['locations']['exclude_directories']);
+        $container->setParameter('rs_di_extra.exclude_files', $config['locations']['exclude_files']);
     }
 }

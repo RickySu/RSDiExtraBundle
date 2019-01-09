@@ -5,25 +5,26 @@ use Symfony\Component\Finder\Finder;
 
 class ClassFileFinder
 {
-    protected $pattern;
-    protected $pathnamePattern;
+    protected $pattern = null;
+    protected $pathnamePattern = '*.php';
+    protected $excludePathnamePattern = null;
+    protected $excludeDirPattern = null;
+    protected $dir;
 
-    public function __construct($dir, $pattern = null, $pathnamePattern = '*.php')
+    public function __construct($dir)
     {
         $this->dir = $dir;
-        $this->pattern = $pattern;
-        $this->pathnamePattern = $pathnamePattern;
     }
 
     public function find()
     {
         $finder = new Finder();
-        $finder
-            ->files()
-            ->in($this->dir)
-            ->name($this->pathnamePattern)
-            ->ignoreVCS(true)
-            ;
+        $finder->files();
+        $finder->in($this->dir);
+        $this->applyExcludeDirPattern($finder);
+        $finder->name($this->pathnamePattern);
+        $this->applyExcludePathnamePattern($finder);
+        $finder->ignoreVCS(true);
 
         if($this->pattern !== null){
             $finder
@@ -34,5 +35,45 @@ class ClassFileFinder
         foreach($finder as $file){
             yield realpath($file->getPathname());
         }
+    }
+
+    protected function applyExcludePathnamePattern(Finder $finder)
+    {
+        if($this->excludePathnamePattern === null){
+            return;
+        }
+        $finder->notName($this->excludePathnamePattern);
+    }
+
+    public function setPattern($pattern): ClassFileFinder
+    {
+        $this->pattern = $pattern;
+        return $this;
+    }
+
+    public function setPathnamePattern(string $pathnamePattern): ClassFileFinder
+    {
+        $this->pathnamePattern = $pathnamePattern;
+        return $this;
+    }
+
+    public function setExcludePathnamePattern($excludePathnamePattern): ClassFileFinder
+    {
+        $this->excludePathnamePattern = $excludePathnamePattern;
+        return $this;
+    }
+
+    public function setExcludeDirPattern($excludeDirPattern): ClassFileFinder
+    {
+        $this->excludeDirPattern = $excludeDirPattern;
+        return $this;
+    }
+
+    protected function applyExcludeDirPattern(Finder $finder)
+    {
+        if($this->excludeDirPattern === null){
+            return;
+        }
+        $finder->notPath($this->excludeDirPattern);
     }
 }

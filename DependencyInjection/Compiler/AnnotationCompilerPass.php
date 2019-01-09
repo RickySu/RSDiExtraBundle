@@ -50,12 +50,15 @@ class AnnotationCompilerPass implements CompilerPassInterface
         return dirname($reflected->getFileName());
     }
 
-    protected function findClassFiles($directories)
+    protected function findClassFiles($directories, $excludeDirectories, $excludeFiles)
     {
         $iterator = new \AppendIterator();
 
         foreach ($directories as $directory){
             $finder = new ClassFileFinder($directory);
+            $finder
+                ->setExcludeDirPattern($excludeDirectories)
+                ->setExcludePathnamePattern($excludeFiles);
             $iterator->append($finder->find());
         }
 
@@ -65,8 +68,10 @@ class AnnotationCompilerPass implements CompilerPassInterface
     protected function handleClassFiles(ContainerBuilder $container, $directories)
     {
         $converter = $container->get('rs_di_extra.definition_converter');
+        $excludeDirectories = $container->getParameter('rs_di_extra.exclude_directories');
+        $excludeFiles = $container->getParameter('rs_di_extra.exclude_files');
         $this->addDirectoriesResources($container, $directories);
-        foreach ($this->findClassFiles($directories) as $classFile){
+        foreach ($this->findClassFiles($directories, $excludeDirectories, $excludeFiles) as $classFile){
             $container->addResource(new FileResource($classFile));
             try {
                 foreach ($converter->convert($classFile) as $id => $definition) {

@@ -10,6 +10,9 @@ rs_di_extra:
     locations:
         bundles:
             -         FooBundle
+        exclude_directories:  foo,bar
+        exclude_files:
+            -         '*Test.php'
 
 doctrine:
     dbal:

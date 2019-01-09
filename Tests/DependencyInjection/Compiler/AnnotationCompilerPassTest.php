@@ -182,11 +182,12 @@ class AnnotationCompilerPassTest extends BaseTestCase
         $directories = array(
             __DIR__.'/../../Fixtures/Foo/Bar',
             __DIR__.'/../../Fixtures/Foo/Buz',
+            __DIR__.'/../../Fixtures/Foo/Excludes',
         );
         $annotationCompilerPass = new AnnotationCompilerPass();
 
         //act
-        $result = $this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories);
+        $result = $this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, null, '*Exclude.php');
 
         //assert
         $this->assertEquals(array(
@@ -194,6 +195,28 @@ class AnnotationCompilerPassTest extends BaseTestCase
             realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar2.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar1.php'),
             realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar2.php'),
+        ), iterator_to_array($result, false));
+    }
+
+    public function test_findClassFiles_exclude_dir()
+    {
+        //arrange
+        $directories = array(
+            __DIR__.'/../../Fixtures/Foo',
+        );
+        $annotationCompilerPass = new AnnotationCompilerPass();
+
+        //act
+        $result = $this->callObjectMethod($annotationCompilerPass, 'findClassFiles', $directories, 'Excludes', null);
+
+        //assert
+        $this->assertEquals(array(
+            realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar1.php'),
+            realpath(__DIR__.'/../../Fixtures/Foo/Buz/Bar2.php'),
+            realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar1.php'),
+            realpath(__DIR__.'/../../Fixtures/Foo/Bar/Bar2.php'),
+            realpath(__DIR__.'/../../Fixtures/Foo/Bar1.php'),
+            realpath(__DIR__.'/../../Fixtures/Foo/Bar2.php'),
         ), iterator_to_array($result, false));
     }
 

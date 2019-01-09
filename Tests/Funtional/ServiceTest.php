@@ -6,6 +6,31 @@ use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooPublicService;
 
 class ServiceTest extends BaseKernelTestCase
 {
+    public function test_parameters_exclude_files()
+    {
+        //arrange
+        //act
+        $files = self::$container->getParameter('rs_di_extra.exclude_files');
+
+        //assert
+        $this->assertEquals(array(
+            '*Test.php'
+        ), $files);
+    }
+
+    public function test_parameters_exclude_directories()
+    {
+        //arrange
+        //act
+        $dirs = self::$container->getParameter('rs_di_extra.exclude_directories');
+
+        //assert
+        $this->assertEquals(array(
+            'foo',
+            'bar'
+        ), $dirs);
+    }
+
     public function test_foo_public_service()
     {
         //arrange

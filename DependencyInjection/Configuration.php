@@ -49,6 +49,24 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
+                            ->arrayNode('exclude_directories')
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(function ($v) {
+                                        return preg_split('/\s*,\s*/', $v);
+                                    })
+                                ->end()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('exclude_files')
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(function ($v) {
+                                        return preg_split('/\s*,\s*/', $v);
+                                    })
+                                ->end()
+                                ->prototype('scalar')->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
