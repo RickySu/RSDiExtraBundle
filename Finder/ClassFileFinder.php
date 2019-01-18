@@ -39,7 +39,7 @@ class ClassFileFinder
 
     protected function applyExcludePathnamePattern(Finder $finder)
     {
-        if($this->excludePathnamePattern === null){
+        if($this->excludePathnamePattern === null || $this->excludePathnamePattern === []){
             return;
         }
         $finder->notName($this->excludePathnamePattern);
@@ -71,7 +71,7 @@ class ClassFileFinder
 
     protected function applyExcludeDirPattern(Finder $finder)
     {
-        if($this->excludeDirPattern === null){
+        if($this->excludeDirPattern === null || $this->excludeDirPattern === []){
             return;
         }
         $finder->notPath($this->excludeDirPattern);
