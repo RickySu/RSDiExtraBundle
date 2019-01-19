@@ -283,6 +283,40 @@ class MyListener
 You can use a string or conatant as event name.
 
 
+### @Command
+
+Define command as service.
+
+```php
+
+use RS\DiExtraBundle\Annotation\Command;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+/**
+ * @Command()
+ */
+class SunshineCommand extends Command
+{
+    protected function configure()
+    {
+        $this
+            ->setName('app:sunshine')
+            ->setDescription('Good morning!');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->logger->info('Waking up the sun');
+        // ...
+    }
+}
+```
+
+Now, SunshineCommand will be registed as a service.
+
 ### @Validator
 
 Register a constraint validator.
