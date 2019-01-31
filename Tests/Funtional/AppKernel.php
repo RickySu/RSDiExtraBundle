@@ -3,7 +3,7 @@ namespace RS\DiExtraBundle\Tests\Funtional;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use RS\DiExtraBundle\RSDiExtraBundle;
-use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\BarBundle;
+use RS\DiExtraBundle\Tests\Funtional\Bundles\Bar\BarBundle;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\FooBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new DoctrineBundle(),
             new RSDiExtraBundle(),
             new FooBundle(),
+            new BarBundle()
         ];
     }
 

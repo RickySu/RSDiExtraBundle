@@ -3,6 +3,7 @@ namespace RS\DiExtraBundle\Test\DependencyInjection\Compiler;
 
 use RS\DiExtraBundle\DependencyInjection\Compiler\AnnotationCompilerPass;
 use RS\DiExtraBundle\Tests\BaseTestCase;
+use RS\DiExtraBundle\Tests\Funtional\Bundles\Bar\BarBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AnnotationCompilerPassTest extends BaseTestCase
@@ -98,6 +99,48 @@ class AnnotationCompilerPassTest extends BaseTestCase
             ->getMock();
         $annotationCompilerPass
             ->expects($this->any())
+            ->method('findBundleDirectory')
+            ->willReturnCallback(function($bundleClass){
+                return "path:$bundleClass";
+            });
+
+        //act
+        $result = $this->callObjectMethod($annotationCompilerPass, 'getSearchDirectories', $container);
+
+        //assert
+        $this->assertEquals($expected, $result);
+    }
+
+    public function test_getSearchDirectories_AutoDiscoverBundleInterface()
+    {
+        //arrange
+        $parameters = array(
+            'kernel.bundles' => array(
+                'bar' => BarBundle::class,
+            ),
+            'rs_di_extra.all_bundles' => false,
+            'rs_di_extra.bundles' => array(),
+            'rs_di_extra.disallow_bundles' => array(),
+            'rs_di_extra.directories' => array(),
+        );
+        $expected = array(
+            "path:{$parameters['kernel.bundles']['bar']}"
+        );
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->setMethods(array('getParameter'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container
+            ->expects($this->atLeastOnce())
+            ->method('getParameter')
+            ->willReturnCallback(function($key) use($parameters){
+                return $parameters[$key];
+            });
+        $annotationCompilerPass = $this->getMockBuilder(AnnotationCompilerPass::class)
+            ->setMethods(array('findBundleDirectory'))
+            ->getMock();
+        $annotationCompilerPass
+            ->expects($this->once())
             ->method('findBundleDirectory')
             ->willReturnCallback(function($bundleClass){
                 return "path:$bundleClass";

@@ -1,6 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\DependencyInjection\Compiler;
 
+use RS\DiExtraBundle\Annotation\AutoDiscoverBundleInterface;
 use RS\DiExtraBundle\Finder\ClassFileFinder;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\Config\Resource\FileResource;
@@ -24,6 +25,13 @@ class AnnotationCompilerPass implements CompilerPassInterface
         $directories = $container->getParameter('rs_di_extra.directories');
 
         foreach ($bundles as $bundleName => $bundleClass){
+            if(class_exists($bundleClass)){
+                $reflect = new \ReflectionClass($bundleClass);
+                if($reflect->isSubclassOf(AutoDiscoverBundleInterface::class)) {
+                    $directories[] = $this->findBundleDirectory($bundleClass);
+                    continue;
+                }
+            }
 
             if(in_array($bundleName, $disallowBundles)){
                 continue;
