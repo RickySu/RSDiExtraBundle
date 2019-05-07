@@ -11,9 +11,6 @@ class RSDiExtraBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $config = $container->getCompilerPassConfig();
-        $passes = $config->getBeforeOptimizationPasses();
-        array_unshift($passes, new AnnotationCompilerPass());
-        $config->setBeforeOptimizationPasses($passes);
+        $container->addCompilerPass(new AnnotationCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1024);
     }
 }
