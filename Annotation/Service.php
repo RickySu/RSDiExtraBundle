@@ -23,10 +23,10 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
     public $private = false;
 
     /** @var bool */
-    public $shared;
+    public $shared = true;
 
-    /** @var string */
-    public $deprecated;
+    /** @var bool */
+    public $deprecated = false;
 
     /** @var string */
     public $decorates;
@@ -38,23 +38,23 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
     public $decorationPriority;
 
     /** @var bool */
-    public $abstract;
+    public $abstract = false;
 
     /** @var array<string> */
     public $environments = array();
 
     /** @var bool */
-    public $autowire;
+    public $autowire = false;
 
     /** @var bool */
-    public $synthetic;
+    public $synthetic = false;
 
     /** @var bool */
-    public $lazy;
+    public $lazy = false;
 
     /** @var bool */
-    public $autoconfigured;
-    
+    public $autoconfigured = false;
+
     /** @var string */
     public $class;
 
