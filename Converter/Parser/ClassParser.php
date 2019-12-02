@@ -95,10 +95,14 @@ class ClassParser
             return;
         }
 
+        $originClassName = $classMeta->class;
+        $originId = $classMeta->id;
         foreach($this->reflectionClass->getTraits() as $traitReflection){
             $classParser = new static($this->annotationReader, $traitReflection);
             $classParser->parse($classMeta);
         }
+        $classMeta->id = $originId;
+        $classMeta->class = $originClassName;
     }
 
 }

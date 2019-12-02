@@ -5,6 +5,7 @@ use RS\DiExtraBundle\Tests\BaseWebTestCase;
 
 class ControllerTest extends BaseWebTestCase
 {
+
     public function test_property_inject()
     {
         //arrange
@@ -16,6 +17,7 @@ class ControllerTest extends BaseWebTestCase
         //assert
         $this->assertEquals('foo_static_factory', $result['fooStaticFactory']['params']['id']);
         $this->assertEquals('foo_static_factory2', $result['fooStaticFactory2']['params']['id']);
+        $this->assertEquals('bar', $result['fooFromTrait']);
         $this->assertEquals('foo_static_factory3', $result['injectParams']['fooStaticFactory3']['params']['id']);
         $this->assertEquals('bar', $result['injectParams']['foo']);
         $this->assertEquals('foo_static_factory', $result['injectParams1']['fooStaticFactory']['params']['id']);

@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FooController extends Controller
 {
+    use FooTrait;
+
     /**
      * @Inject()
      */
@@ -86,6 +88,7 @@ class FooController extends Controller
         return new Response(json_encode(array(
             'fooStaticFactory' => $this->fooStaticFactory,
             'fooStaticFactory2' => $this->fooStaticFactory2,
+            'fooFromTrait' => $this->fooFromTrait,
             'injectParams' => $this->injectParams,
             'injectParams1' => $this->injectParams1,
             'constructParams' => $this->constructParams,
