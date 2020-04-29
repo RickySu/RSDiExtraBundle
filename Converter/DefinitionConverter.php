@@ -63,6 +63,7 @@ class DefinitionConverter
 
         if($classMeta->parent){
             $definition = new ChildDefinition($classMeta->parent);
+            $definition->setClass($classMeta->class);
         }
         else {
             $definition = new Definition($classMeta->class);
