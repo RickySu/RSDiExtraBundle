@@ -26,6 +26,7 @@ class ClassParser
         $this->parseClass($classMeta);
         $this->parseMethod($classMeta);
         $this->parseProperty($classMeta);
+        $this->parseParent($classMeta);
     }
 
     protected function parseParent(ClassMeta $classMeta)
