@@ -15,6 +15,21 @@ class ServiceFactory
     protected $params = array();
 
     /**
+     * @var FooChildService
+     */
+    public $fooChild;
+
+    /**
+     * @InjectParams({
+     *     "fooChildService" = @Inject("foo_child"),
+     * })
+     */
+    public function injectFooChild(FooChildService $fooChildService)
+    {
+        $this->fooChild = $fooChildService;
+    }
+
+    /**
      * @InjectParams({
      *     "foo" = @Inject("%foo%"),
      * })

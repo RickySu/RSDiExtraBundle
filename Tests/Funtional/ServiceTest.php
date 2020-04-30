@@ -1,8 +1,10 @@
 <?php
 namespace RS\DiExtraBundle\Tests\Funtional;
 use RS\DiExtraBundle\Tests\BaseKernelTestCase;
+use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooChildService;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooNotPublicService;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooPublicService;
+use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\ServiceFactory;
 
 class ServiceTest extends BaseKernelTestCase
 {
@@ -196,5 +198,15 @@ class ServiceTest extends BaseKernelTestCase
             'foo_static_factory',
             'foo_static_factory2',
         ), $ids);
+    }
+
+    public function test_childService_issue_3()
+    {
+        //arrange
+        //act
+        $service = self::$container->get(ServiceFactory::class);
+
+        //assert
+        $this->assertInstanceOf(FooChildService::class, $service->fooChild);
     }
 }
