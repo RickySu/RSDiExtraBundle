@@ -6,6 +6,7 @@ use RS\DiExtraBundle\Annotation\InjectParams;
 
 trait InjectFooStaticFactory2Trait
 {
+    public $injectFooStaticFactory2Counter = 0;
     public $fooStaticFactory2;
 
     /**
@@ -14,5 +15,6 @@ trait InjectFooStaticFactory2Trait
     public function injectFooStaticFactory2($fooStaticFactory2)
     {
         $this->fooStaticFactory2 = $fooStaticFactory2;
+        $this->injectFooStaticFactory2Counter++;
     }
 }

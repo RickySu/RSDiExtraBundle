@@ -275,11 +275,11 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
             ->getMock();
 
         $reflectionMethod
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn('foo');
         $reflectionMethod
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('isConstructor')
             ->willReturn(false);
 
@@ -310,7 +310,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
 
         //assert
         $this->assertEquals(array(
-            array('foo', $mappedArguments),
+            'foo' => array('foo', $mappedArguments),
         ), $classMeta->methodCalls);
     }
 }

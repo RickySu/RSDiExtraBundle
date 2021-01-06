@@ -73,7 +73,7 @@ class InjectParamsMethodHandler
             return;
         }
 
-        $classMeta->methodCalls[] = array($reflectionMethod->getName(), $mappedArguments);
+        $classMeta->methodCalls[$reflectionMethod->getName()] = array($reflectionMethod->getName(), $mappedArguments);
     }
 
 }

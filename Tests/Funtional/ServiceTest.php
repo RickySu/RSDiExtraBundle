@@ -4,6 +4,7 @@ use RS\DiExtraBundle\Tests\BaseKernelTestCase;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooChildService;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooNotPublicService;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooPublicService;
+use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\FooTraitInjectService;
 use RS\DiExtraBundle\Tests\Funtional\Bundles\Foo\Service\ServiceFactory;
 
 class ServiceTest extends BaseKernelTestCase
@@ -208,5 +209,16 @@ class ServiceTest extends BaseKernelTestCase
 
         //assert
         $this->assertInstanceOf(FooChildService::class, $service->fooChild);
+    }
+
+    public function test_tait_inject_twice()
+    {
+        //arrange
+        //act
+        $service = self::$container->get(FooTraitInjectService::class);
+
+        //assert
+        $this->assertEquals(1, $service->injectFooStaticFactoryCounter);
+        $this->assertEquals(1, $service->injectFooStaticFactory2Counter);
     }
 }
