@@ -4,6 +4,8 @@ namespace RS\DiExtraBundle\Converter\Parser;
 use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Annotation\ClassProcessorInterface;
 use RS\DiExtraBundle\Converter\ClassMeta;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ClassParser
 {
@@ -52,14 +54,37 @@ class ClassParser
 
     protected function parseClass(ClassMeta $classMeta)
     {
+        if($classMeta->class === null && $this->isController($this->reflectionClass)){
+            $classMeta->class = $this->reflectionClass->getName();
+            $classMeta->isController = true;
+        }
+
         $this->parseParent($classMeta);
         $this->parseTraits($classMeta);
+
         foreach($this->annotationReader->getClassAnnotations($this->reflectionClass) as $annotation){
             if($annotation instanceof ClassProcessorInterface){
                 $classMeta->class = $this->reflectionClass->getName();
                 $annotation->handleClass($classMeta, $this->reflectionClass);
             }
         }
+
+        if($classMeta->class !== null && $classMeta === null){
+            $classMeta->id = $classMeta->class;
+        }
+    }
+
+    protected function isController(\ReflectionClass $reflectionClass)
+    {
+        if($reflectionClass->isSubclassOf(Controller::class)){
+            return true;
+        }
+
+        if($reflectionClass->isSubclassOf(AbstractController::class)){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -94,7 +119,6 @@ class ClassParser
         if(!$this->reflectionClass->getTraits()){
             return;
         }
-
         $originClassName = $classMeta->class;
         $originId = $classMeta->id;
         foreach($this->reflectionClass->getTraits() as $traitReflection){

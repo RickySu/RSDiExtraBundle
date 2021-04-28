@@ -233,6 +233,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->id = $source['id'];
         $classMeta->class = $source['class'];
+        $classMeta->isController = true;
         $annotation = new Inject();
         $annotation->value = null;
         $propertyInjectHandler = new InjectPropertyHandler();
@@ -273,6 +274,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->id = $source['id'];
         $classMeta->class = $source['class'];
+        $classMeta->isController = true;
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = false;
@@ -317,6 +319,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->id = $source['id'];
         $classMeta->class = $source['class'];
+        $classMeta->isController = true;
         $annotation = new Inject();
         $annotation->value = 'bar';
         $annotation->required = true;

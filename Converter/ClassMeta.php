@@ -28,5 +28,5 @@ class ClassMeta
     public $factoryClass;
     public $factoryTags = array();
     public $nextClassMeta;
-
+    public $isController = false;
 }
