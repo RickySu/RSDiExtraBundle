@@ -35,7 +35,7 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
     public $decorationInnerName;
 
     /** @var integer */
-    public $decorationPriority;
+    public $decorationPriority = 0;
 
     /** @var bool */
     public $abstract = false;

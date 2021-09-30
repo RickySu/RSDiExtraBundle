@@ -28,7 +28,6 @@ class DefinitionConverter
         $parser = new DocParser();
         $parser->setIgnoreNotImportedAnnotations(true);
         $this->reader = new AnnotationReader($parser);
-        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**

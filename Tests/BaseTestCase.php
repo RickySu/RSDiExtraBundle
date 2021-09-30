@@ -1,7 +1,9 @@
 <?php
 namespace RS\DiExtraBundle\Tests;
 
-abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class BaseTestCase extends TestCase
 {
     use BaseTestTrait;
 }

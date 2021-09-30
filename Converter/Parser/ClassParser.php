@@ -5,7 +5,8 @@ use Doctrine\Common\Annotations\Reader;
 use RS\DiExtraBundle\Annotation\ClassProcessorInterface;
 use RS\DiExtraBundle\Converter\ClassMeta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ClassParser
 {
@@ -57,6 +58,7 @@ class ClassParser
         if($classMeta->class === null && $this->isController($this->reflectionClass)){
             $classMeta->class = $this->reflectionClass->getName();
             $classMeta->isController = true;
+            $classMeta->methodCalls[] = array('setContainer', array(new Reference('service_container', ContainerInterface::NULL_ON_INVALID_REFERENCE)));
         }
 
         $this->parseParent($classMeta);
@@ -76,10 +78,6 @@ class ClassParser
 
     protected function isController(\ReflectionClass $reflectionClass)
     {
-        if($reflectionClass->isSubclassOf(Controller::class)){
-            return true;
-        }
-
         if($reflectionClass->isSubclassOf(AbstractController::class)){
             return true;
         }

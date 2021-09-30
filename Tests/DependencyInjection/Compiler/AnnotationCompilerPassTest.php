@@ -3,7 +3,7 @@ namespace RS\DiExtraBundle\Test\DependencyInjection\Compiler;
 
 use RS\DiExtraBundle\DependencyInjection\Compiler\AnnotationCompilerPass;
 use RS\DiExtraBundle\Tests\BaseTestCase;
-use RS\DiExtraBundle\Tests\Funtional\Bundles\Bar\BarBundle;
+use RS\DiExtraBundle\Tests\Functional\Bundles\Bar\BarBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AnnotationCompilerPassTest extends BaseTestCase
@@ -270,11 +270,4 @@ class AnnotationCompilerPassTest extends BaseTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function test_handleClassFiles()
-    {
-        //arrange
-
-        //act
-        //assert
-    }
 }

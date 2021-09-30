@@ -1,7 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Tests;
 
-use RS\DiExtraBundle\Tests\Funtional\AppKernel;
+use RS\DiExtraBundle\Tests\Functional\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
