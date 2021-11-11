@@ -71,7 +71,7 @@ class ClassParser
             }
         }
 
-        if($classMeta->class !== null && $classMeta === null){
+        if($classMeta->class !== null && $classMeta->id === null){
             $classMeta->id = $classMeta->class;
         }
     }
