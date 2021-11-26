@@ -47,6 +47,7 @@ class ServiceFactory
      *
      * @Service("foo_service_factory", class=\stdClass::class)
      * @Tag("foo_tag", attributes={"foo": "foo"})
+     * @Tag("tag_index_by", attributes={"index": "foo"})
      */
     public function create()
     {

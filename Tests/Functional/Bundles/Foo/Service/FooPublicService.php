@@ -29,6 +29,9 @@ class FooPublicService
     public $fooTagServices = array();
 
     public $barTagServices = array();
+
+    public $indexByTagServices = array();
+
     /**
      * FooPublicService constructor.
      * @param FooPublicService $fooPublicService
@@ -83,6 +86,16 @@ class FooPublicService
     public function injectBarTag(iterable $bar)
     {
         $this->barTagServices = iterator_to_array($bar);
+    }
+
+    /**
+     * @InjectParams({
+     *     "foo" = @Inject("!tagged tag_index_by index"),
+     * })
+     */
+    public function injectTagIndexBy(iterable $foo)
+    {
+        $this->indexByTagServices = iterator_to_array($foo);
     }
 
     /**

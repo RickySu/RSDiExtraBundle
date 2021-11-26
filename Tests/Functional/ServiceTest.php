@@ -201,6 +201,19 @@ class ServiceTest extends BaseKernelTestCase
         ), $ids);
     }
 
+    public function test_taggedService_indexby()
+    {
+        //arrange
+        //act
+        $service = self::getContainer()->get('foo_public');
+        $tagServiceKeys = array_keys($service->indexByTagServices);
+        sort($tagServiceKeys);
+
+        //assert
+        $this->assertCount(3, $service->indexByTagServices);
+        $this->assertEquals(array('buz', 'foo', 'foo_static'), $tagServiceKeys);
+    }
+
     public function test_childService_issue_3()
     {
         //arrange

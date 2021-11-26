@@ -25,8 +25,9 @@ class ParameterGuesser
     public function guessAnnotationArgument($annotationValue, $required = false)
     {
         if($this->isTagged($annotationValue)){
-            list(, $value) = explode(' ', $annotationValue);
-            return new TaggedIteratorArgument($value);
+            $args = explode(' ', $annotationValue);
+            array_shift($args);
+            return new TaggedIteratorArgument(...$args);
         }
 
         if($this->isParameters($annotationValue)){
