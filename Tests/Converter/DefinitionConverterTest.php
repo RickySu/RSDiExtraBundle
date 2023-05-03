@@ -14,12 +14,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class DefinitionConverterTest extends BaseTestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
     public function test_getClassName_no_namespace()
     {
         //arrange
+        $this->expectException(\RuntimeException::class);
         $file = __DIR__.'/../bootstrap.php';
         $definitionConverter = new DefinitionConverter();
 
@@ -29,12 +27,10 @@ class DefinitionConverterTest extends BaseTestCase
         //assert
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function test_getClassName_no_class_or_trait()
     {
         //arrange
+        $this->expectException(\RuntimeException::class);
         $reflectionClass = new \ReflectionClass(ClassProcessorInterface::class);
         $definitionConverter = new DefinitionConverter();
 
@@ -102,7 +98,7 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->id = 'debug';
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('isEnabledInEnvironment'))
+            ->onlyMethods(array('isEnabledInEnvironment'))
             ->getMock();
         $definitionConverter
             ->expects($this->once())
@@ -122,7 +118,7 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta = new ClassMeta();
         $classMeta->id = 'debug';
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('isEnabledInEnvironment'))
+            ->onlyMethods(array('isEnabledInEnvironment'))
             ->getMock();
         $definitionConverter
             ->expects($this->once())
@@ -143,7 +139,7 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta->id = 'debug';
         $classMeta->parent = 'test';
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('isEnabledInEnvironment'))
+            ->onlyMethods(array('isEnabledInEnvironment'))
             ->getMock();
         $definitionConverter
             ->expects($this->once())
@@ -182,7 +178,7 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta->autoconfigured = true;
 
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('isEnabledInEnvironment'))
+            ->onlyMethods(array('isEnabledInEnvironment'))
             ->getMock();
         $definitionConverter
             ->expects($this->once())
@@ -237,7 +233,7 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta->autoconfigured = true;
 
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('isEnabledInEnvironment', 'createControllerFactory'))
+            ->onlyMethods(array('isEnabledInEnvironment', 'createControllerFactory'))
             ->getMock();
         $definitionConverter
             ->expects($this->once())
@@ -322,7 +318,7 @@ class DefinitionConverterTest extends BaseTestCase
         $definition2 = new Definition();
 
         $definitionConverter = $this->getMockBuilder(DefinitionConverter::class)
-            ->setMethods(array('parseClassFile', 'convertDefinition'))
+            ->onlyMethods(array('parseClassFile', 'convertDefinition'))
             ->getMock();
 
         $definitionConverter
@@ -332,20 +328,24 @@ class DefinitionConverterTest extends BaseTestCase
             ->willReturn($classMeta);
 
         $definitionConverter
-            ->expects($this->at(1))
+            ->expects($this->any())
             ->method('convertDefinition')
-            ->with($classMeta)
-            ->willReturn(null);
-        $definitionConverter
-            ->expects($this->at(2))
-            ->method('convertDefinition')
-            ->with($classMeta->nextClassMeta)
-            ->willReturn($definition1);
-        $definitionConverter
-            ->expects($this->at(3))
-            ->method('convertDefinition')
-            ->with($classMeta->nextClassMeta->nextClassMeta)
-            ->willReturn($definition2);
+            ->willReturnCallback(function($classMetaForTest) use($classMeta, $definition0, $definition1, $definition2){
+                static $index = 0;
+                switch ($index++){
+                    case 0:
+                        $this->assertEquals($classMeta, $classMetaForTest);
+                        return null;
+                    case 1:
+                        $this->assertEquals($classMeta->nextClassMeta, $classMetaForTest);
+                        return $definition1;
+                    case 2:
+                        $this->assertEquals($classMeta->nextClassMeta->nextClassMeta, $classMetaForTest);
+                        return $definition2;
+                    default:
+                        $this->fail('should not be called');
+                }
+            });
         $definitionConverter
             ->expects($this->exactly(3))
             ->method('convertDefinition')

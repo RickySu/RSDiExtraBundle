@@ -16,7 +16,7 @@ abstract class BaseKernelTestCase extends KernelTestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->bootKernel();

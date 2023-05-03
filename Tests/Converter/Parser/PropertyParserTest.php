@@ -33,9 +33,9 @@ class PropertyParserTest extends BaseTestCase
             ->getMock();
 
         $annotations = array(
-            $this->getMockBuilder(PropertyProcessorInterface::class)->setMethods(array('handleProperty'))->getMockForAbstractClass(),
+            $this->getMockBuilder(PropertyProcessorInterface::class)->onlyMethods(array('handleProperty'))->getMockForAbstractClass(),
             new \stdClass(),
-            $this->getMockBuilder(PropertyProcessorInterface::class)->setMethods(array('handleProperty'))->getMockForAbstractClass(),
+            $this->getMockBuilder(PropertyProcessorInterface::class)->onlyMethods(array('handleProperty'))->getMockForAbstractClass(),
         );
 
         $annotations[0]
@@ -58,7 +58,7 @@ class PropertyParserTest extends BaseTestCase
 
         $annotationReader = $this->getMockBuilder(AnnotationReader::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('getPropertyAnnotations'))
+            ->onlyMethods(array('getPropertyAnnotations'))
             ->getMock();
 
         $annotationReader
@@ -69,7 +69,7 @@ class PropertyParserTest extends BaseTestCase
 
         $propertyParser = $this->getMockBuilder(PropertyParser::class)
             ->disableOriginalConstructor()
-            ->setMethods()
+            ->onlyMethods(array())
             ->getMock();
 
         $this->setObjectAttribute($propertyParser, 'reflectionProperty', $reflectionProperty);

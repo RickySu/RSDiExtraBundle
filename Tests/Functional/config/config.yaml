@@ -18,7 +18,7 @@ doctrine:
     dbal:
         # configure these for your database server
         driver: pdo_sqlite
-        path: 'sqlite:///%kernel.cache_dir%/var/app.db'
+        path: 'sqlite::memory:'
         charset: UTF8
 
     orm:

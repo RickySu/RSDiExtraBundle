@@ -33,7 +33,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
             'path:buzClass',
         );
         $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(array('getParameter'))
+            ->onlyMethods(array('getParameter'))
             ->disableOriginalConstructor()
             ->getMock();
         $container
@@ -43,7 +43,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
                 return $parameters[$key];
             });
         $annotationCompilerPass = $this->getMockBuilder(AnnotationCompilerPass::class)
-            ->setMethods(array('findBundleDirectory'))
+            ->onlyMethods(array('findBundleDirectory'))
             ->getMock();
         $annotationCompilerPass
             ->expects($this->any())
@@ -85,7 +85,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
             'path:buzClass',
         );
         $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(array('getParameter'))
+            ->onlyMethods(array('getParameter'))
             ->disableOriginalConstructor()
             ->getMock();
         $container
@@ -95,7 +95,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
                 return $parameters[$key];
             });
         $annotationCompilerPass = $this->getMockBuilder(AnnotationCompilerPass::class)
-            ->setMethods(array('findBundleDirectory'))
+            ->onlyMethods(array('findBundleDirectory'))
             ->getMock();
         $annotationCompilerPass
             ->expects($this->any())
@@ -127,7 +127,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
             "path:{$parameters['kernel.bundles']['bar']}"
         );
         $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(array('getParameter'))
+            ->onlyMethods(array('getParameter'))
             ->disableOriginalConstructor()
             ->getMock();
         $container
@@ -137,7 +137,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
                 return $parameters[$key];
             });
         $annotationCompilerPass = $this->getMockBuilder(AnnotationCompilerPass::class)
-            ->setMethods(array('findBundleDirectory'))
+            ->onlyMethods(array('findBundleDirectory'))
             ->getMock();
         $annotationCompilerPass
             ->expects($this->once())
@@ -180,7 +180,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
             'path:barClass',
         );
         $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(array('getParameter'))
+            ->onlyMethods(array('getParameter'))
             ->disableOriginalConstructor()
             ->getMock();
         $container
@@ -190,7 +190,7 @@ class AnnotationCompilerPassTest extends BaseTestCase
                 return $parameters[$key];
             });
         $annotationCompilerPass = $this->getMockBuilder(AnnotationCompilerPass::class)
-            ->setMethods(array('findBundleDirectory'))
+            ->onlyMethods(array('findBundleDirectory'))
             ->getMock();
         $annotationCompilerPass
             ->expects($this->any())

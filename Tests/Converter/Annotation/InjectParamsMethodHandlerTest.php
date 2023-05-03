@@ -102,7 +102,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
     {
         //arrange
         $reflectionType = $this->getMockBuilder(\ReflectionType::class)
-            ->setMethods(array('getName'))
+            ->addMethods(array('getName'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionType
@@ -111,19 +111,19 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
             ->willReturn('ReflectTypeName');
 
         $reflectionParameter0 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName', 'getType'))
+            ->onlyMethods(array('getName', 'getType'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter0->expects($this->atLeastOnce())->method('getName')->willReturn('foo');
         $reflectionParameter0->expects($this->atLeastOnce())->method('getType')->willReturn(null);
         $reflectionParameter1 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName', 'getType'))
+            ->onlyMethods(array('getName', 'getType'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter1->expects($this->atLeastOnce())->method('getName')->willReturn('bar');
         $reflectionParameter1->expects($this->atLeastOnce())->method('getType')->willReturn($reflectionType);
         $reflectionParameter2 = $this->getMockBuilder(\ReflectionParameter::class)
-        ->setMethods(array('getName', 'getType'))
+        ->onlyMethods(array('getName', 'getType'))
         ->disableOriginalConstructor()
         ->getMock();
         $reflectionParameter2->expects($this->never())->method('getName')->willReturn('buz');
@@ -136,7 +136,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         );
 
         $reflectionMethod = $this->getMockBuilder(\ReflectionMethod::class)
-            ->setMethods(array('getParameters', 'getNumberOfRequiredParameters'))
+            ->onlyMethods(array('getParameters', 'getNumberOfRequiredParameters'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionMethod
@@ -173,17 +173,17 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
             'buz1' => 'buz1',
         );
         $reflectionParameter0 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName'))
+            ->onlyMethods(array('getName'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter0->expects($this->atLeastOnce())->method('getName')->willReturn('foo');
         $reflectionParameter1 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName'))
+            ->onlyMethods(array('getName'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter1->expects($this->atLeastOnce())->method('getName')->willReturn('bar');
         $reflectionParameter2 = $this->getMockBuilder(\ReflectionParameter::class)
-            ->setMethods(array('getName'))
+            ->onlyMethods(array('getName'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionParameter2->expects($this->atLeastOnce())->method('getName')->willReturn('buz');
@@ -195,7 +195,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         );
 
         $reflectionMethod = $this->getMockBuilder(\ReflectionMethod::class)
-            ->setMethods(array('getParameters'))
+            ->onlyMethods(array('getParameters'))
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionMethod
@@ -222,7 +222,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         $mappedArguments = array('foo', 'bar');
         $reflectionMethod = $this->getMockBuilder(\ReflectionMethod::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('isConstructor'))
+            ->onlyMethods(array('isConstructor'))
             ->getMock();
 
         $reflectionMethod
@@ -231,7 +231,8 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
             ->willReturn(true);
 
         $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
-            ->setMethods(array('findFactoryClassMeta', 'convertArguments', 'convertAnnotationArguments', 'mapArguments'))
+            ->addMethods(array('findFactoryClassMeta'))
+            ->onlyMethods(array('convertArguments', 'convertAnnotationArguments', 'mapArguments'))
             ->getMock();
 
         $methodInjectParamsHandler
@@ -271,7 +272,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         $mappedArguments = array('foo', 'bar');
         $reflectionMethod = $this->getMockBuilder(\ReflectionMethod::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('isConstructor', 'getName'))
+            ->onlyMethods(array('isConstructor', 'getName'))
             ->getMock();
 
         $reflectionMethod
@@ -286,7 +287,7 @@ class InjectParamsMethodHandlerTest extends BaseTestCase
         $classMeta = new ClassMeta();
 
         $methodInjectParamsHandler = $this->getMockBuilder(InjectParamsMethodHandler::class)
-            ->setMethods(array('convertArguments', 'convertAnnotationArguments', 'mapArguments'))
+            ->onlyMethods(array('convertArguments', 'convertAnnotationArguments', 'mapArguments'))
             ->getMock();
 
         $methodInjectParamsHandler

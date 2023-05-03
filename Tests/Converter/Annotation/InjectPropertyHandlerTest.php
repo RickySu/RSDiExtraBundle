@@ -75,7 +75,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->once())
@@ -116,7 +116,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->never())
@@ -160,7 +160,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(self::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->never())
@@ -239,7 +239,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->once())
@@ -281,7 +281,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->never())
@@ -326,7 +326,7 @@ class InjectPropertyHandlerTest extends BaseTestCase
         $propertyInjectHandler = new InjectPropertyHandler();
         $reflectionProperty = new \ReflectionProperty(FakeController::class, 'property');
         $parameterGuesser = $this->getMockBuilder(ParameterGuesser::class)
-            ->setMethods(array('guessArgument', 'guessAnnotationArgument'))
+            ->onlyMethods(array('guessArgument', 'guessAnnotationArgument'))
             ->getMock();
         $parameterGuesser
             ->expects($this->never())

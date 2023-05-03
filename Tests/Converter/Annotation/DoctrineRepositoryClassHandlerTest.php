@@ -5,16 +5,15 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use RS\DiExtraBundle\Annotation\DoctrineRepository;
 use RS\DiExtraBundle\Converter\Annotation\DoctrineRepositoryClassHandler;
 use RS\DiExtraBundle\Converter\ClassMeta;
+use RS\DiExtraBundle\Exception\InvalidAnnotationException;
 use RS\DiExtraBundle\Tests\BaseTestCase;
 
 class DoctrineRepositoryClassHandlerTest extends BaseTestCase
 {
-    /**
-     * @expectedException \RS\DiExtraBundle\Exception\InvalidAnnotationException
-     */
     public function test_handle_invalid_instance()
     {
         //arrange
+        $this->expectException(InvalidAnnotationException::class);
         $repository = $this->getMockBuilder(ServiceEntityRepository::class)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();

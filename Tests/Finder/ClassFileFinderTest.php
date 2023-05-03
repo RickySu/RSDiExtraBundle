@@ -49,7 +49,7 @@ class ClassFileFinderTest extends BaseTestCase
         $result = $classFinder->find();
 
         //assert
-        $this->assertCount(0, $result);
+        $this->assertCount(0, iterator_to_array($result));
     }
 
     public function test_ClassFileFinder_find_Foo()

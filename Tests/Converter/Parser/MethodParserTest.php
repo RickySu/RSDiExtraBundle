@@ -33,9 +33,9 @@ class MethodParserTest extends BaseTestCase
             ->getMock();
 
         $annotations = array(
-            $this->getMockBuilder(MethodProcessorInterface::class)->setMethods(array('handleMethod'))->getMockForAbstractClass(),
+            $this->getMockBuilder(MethodProcessorInterface::class)->onlyMethods(array('handleMethod'))->getMockForAbstractClass(),
             new \stdClass(),
-            $this->getMockBuilder(MethodProcessorInterface::class)->setMethods(array('handleMethod'))->getMockForAbstractClass(),
+            $this->getMockBuilder(MethodProcessorInterface::class)->onlyMethods(array('handleMethod'))->getMockForAbstractClass(),
         );
 
         $annotations[0]
@@ -58,7 +58,7 @@ class MethodParserTest extends BaseTestCase
 
         $annotationReader = $this->getMockBuilder(AnnotationReader::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('getMethodAnnotations'))
+            ->onlyMethods(array('getMethodAnnotations'))
             ->getMock();
 
         $annotationReader
@@ -69,7 +69,7 @@ class MethodParserTest extends BaseTestCase
 
         $methodParser = $this->getMockBuilder(MethodParser::class)
             ->disableOriginalConstructor()
-            ->setMethods()
+            ->onlyMethods(array())
             ->getMock();
 
         $this->setObjectAttribute($methodParser, 'reflectionMethod', $reflectionMethod);

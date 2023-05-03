@@ -2,13 +2,13 @@
 namespace RS\DiExtraBundle\Tests;
 
 use RS\DiExtraBundle\Tests\Functional\AppKernel;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class BaseWebTestCase extends WebTestCase
 {
-    /** @var Client */
+    /** @var KernelBrowser */
     protected $client;
 
     /** @var Router */
@@ -16,7 +16,7 @@ abstract class BaseWebTestCase extends WebTestCase
 
     use BaseTestTrait;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->client = static::createClient();

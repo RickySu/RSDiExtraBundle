@@ -16,7 +16,7 @@ class ControllerGeneratorTest extends BaseTestCase
         $propertyParameters = array('foo3', 'bar3');
         $generator = $this->getMockBuilder(ControllerGenerator::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('initParameters'))
+            ->onlyMethods(array('initParameters'))
             ->getMock();
         $generator
             ->expects($this->once())
@@ -70,7 +70,7 @@ class ControllerGeneratorTest extends BaseTestCase
         $namespace = 'foo';
         $className = 'bar';
         $generator = $this->getMockBuilder(ControllerGenerator::class)
-            ->setMethods(array('getFactoryNamespace', 'getFactoryClassName'))
+            ->onlyMethods(array('getFactoryNamespace', 'getFactoryClassName'))
             ->disableOriginalConstructor()
             ->getMock();
         $generator
@@ -101,7 +101,7 @@ class ControllerGeneratorTest extends BaseTestCase
         );
         $propertyParameters = array('foo', 'bar', 'buz');
         $generator = $this->getMockBuilder(ControllerGenerator::class)
-            ->setMethods(array('getFactoryNamespace'))
+            ->onlyMethods(array('getFactoryNamespace'))
             ->setConstructorArgs(array($className, $constructParameters, $injectParameters, $propertyParameters))
             ->getMock();
         $generator
@@ -140,7 +140,7 @@ class ControllerGeneratorTest extends BaseTestCase
         );
         $propertyParameters = array();
         $generator = $this->getMockBuilder(ControllerGenerator::class)
-            ->setMethods(array('getFactoryNamespace'))
+            ->onlyMethods(array('getFactoryNamespace'))
             ->setConstructorArgs(array($className, $constructParameters, $injectParameters, $propertyParameters))
             ->getMock();
         $generator
