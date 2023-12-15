@@ -383,8 +383,9 @@ class DefinitionConverterTest extends BaseTestCase
         $this->callObjectMethod($definitionConverter, 'createControllerFactory', $classMeta, $definition);
 
         //assert
-        $this->assertEquals("$cacheDir/controllers/{$factoryClassName}.php", $definition->getFile());
-        $this->assertEquals(array("RS\\DiExtraBundle\\Factory\\Controller\\$factoryClassName", 'create'), $definition->getFactory());
+        $this->assertStringStartsWith("$cacheDir/controllers/{$factoryClassName}_", $definition->getFile());
+        $this->assertStringStartsWith("RS\\DiExtraBundle\\Factory\\Controller\\$factoryClassName".'_', $definition->getFactory()[0]);
+        $this->assertEquals('create', $definition->getFactory()[1]);
         $this->assertEquals(array('bar', $classMeta->controllerProperties['foo']), $definition->getArguments());
         $this->assertTrue($definition->isPublic());
         (new Filesystem())->remove($cacheDir);

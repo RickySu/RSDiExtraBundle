@@ -17,7 +17,10 @@ class ControllerGenerator
     protected $injectParameters;
 
     protected $injectParameterStart = 0;
+
     protected $propertyParameterStart = 0;
+
+    protected $classSuffix = '';
 
     public function __construct($className, array $constructParameters = array(), array $injectParameters = array(), array $propertyParameters = array())
     {
@@ -26,6 +29,7 @@ class ControllerGenerator
         $this->injectParameters = $injectParameters;
         $this->propertyParameters = $propertyParameters;
         $this->initParameters();
+        $this->classSuffix = md5(microtime().rand());
     }
 
     protected function getFactoryNamespace()
@@ -35,7 +39,7 @@ class ControllerGenerator
 
     public function getFactoryClassName()
     {
-        return str_replace('\\', '_', $this->className);
+        return str_replace('\\', '_', $this->className)."_{$this->classSuffix}";
     }
 
     public function getFactoryClassFullName()
@@ -81,7 +85,7 @@ EOT;
     protected function getSetterDefine()
     {
         if(count($this->propertyParameters) == 0){
-            return;
+            return '';
         }
 
         $injects = array();
