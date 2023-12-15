@@ -47,7 +47,7 @@ class ControllerGeneratorTest extends BaseTestCase
         $result = $generator->getFactoryClassName();
 
         //assert
-        $this->assertEquals('Foo_Bar_Buz', $result);
+        $this->assertEquals('Foo_Bar_Buz_'.$this->getObjectAttribute($generator, 'classSuffix'), $result);
     }
 
     public function test_getFactoryNamespace()
