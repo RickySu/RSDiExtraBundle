@@ -160,11 +160,10 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta->id = 'debug';
         $classMeta->shared = true;
         $classMeta->public = true;
-        $classMeta->private = true;
         $classMeta->decorates = 'foo';
         $classMeta->decorationInnerName = 'bar';
         $classMeta->decorationPriority = 10;
-        $classMeta->deprecated = true;
+        $classMeta->deprecated = array('foo', 'bar', 'buz %service_id%');
         $classMeta->abstract = true;
         $classMeta->tags = array('a', 'b', 'c');
         $classMeta->arguments = array('foo', 'bar');
@@ -193,7 +192,11 @@ class DefinitionConverterTest extends BaseTestCase
         //assert
         $this->assertEquals($classMeta->shared, $result->isShared());
         $this->assertEquals(array($classMeta->decorates, $classMeta->decorationInnerName, $classMeta->decorationPriority), $result->getDecoratedService());
-        $this->assertEquals($classMeta->deprecated, $result->isDeprecated());
+        $this->assertEquals(array(
+            'package' => 'foo',
+            'version' => 'bar',
+            'message' => 'buz debug',
+        ), $result->getDeprecation($classMeta->id));
         $this->assertEquals($classMeta->abstract, $result->isAbstract());
         $this->assertEquals($classMeta->tags, $result->getTags());
         $this->assertEquals($classMeta->arguments, $result->getArguments());
@@ -214,11 +217,10 @@ class DefinitionConverterTest extends BaseTestCase
         $classMeta->id = 'debug';
         $classMeta->shared = true;
         $classMeta->public = true;
-        $classMeta->private = true;
         $classMeta->decorates = 'foo';
         $classMeta->decorationInnerName = 'bar';
         $classMeta->decorationPriority = 10;
-        $classMeta->deprecated = true;
+        $classMeta->deprecated = null;
         $classMeta->abstract = true;
         $classMeta->tags = array('a', 'b', 'c');
         $classMeta->arguments = array('foo', 'bar');

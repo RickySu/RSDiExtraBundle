@@ -8,11 +8,11 @@ class ClassMeta
     public $parent;
     public $shared = true;
     public $public = true;
-    public $private = false;
     public $decorates;
     public $decorationInnerName;
     public $decorationPriority = 0;
-    public $deprecated = false;
+    /** @var array | null  */
+    public $deprecated = null;
     public $abstract = false;
     public $tags = array();
     public $arguments = array();

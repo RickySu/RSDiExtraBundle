@@ -2,19 +2,16 @@
 namespace RS\DiExtraBundle\Tests;
 
 use RS\DiExtraBundle\Tests\Functional\AppKernel;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
-abstract class BaseKernelTestCase extends KernelTestCase
+abstract class BaseKernelTestCase extends BaseTestCase
 {
-    use BaseTestTrait;
+    /** @var Kernel */
+    protected $kernel;
 
-    protected static function createKernel(array $options = array())
-    {
-        return new AppKernel(
-            isset($options['environment']) ? $options['environment'] : 'test',
-            isset($options['debug']) ? $options['debug'] : true
-        );
-    }
+    /** @var ContainerInterface */
+    protected $container;
 
     protected function setUp(): void
     {
@@ -22,4 +19,18 @@ abstract class BaseKernelTestCase extends KernelTestCase
         $this->bootKernel();
     }
 
+    protected function tearDown(): void
+    {
+        $this->kernel->shutdown();
+        unset($this->kernel);
+        unset($this->container);
+        parent::tearDown();
+    }
+
+    protected function bootKernel()
+    {
+        $this->kernel = new AppKernel('test', true);
+        $this->kernel->boot();
+        $this->container = $this->kernel->getContainer()->get('test.service_container');
+    }
 }

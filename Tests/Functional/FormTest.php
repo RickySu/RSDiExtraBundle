@@ -1,10 +1,10 @@
 <?php
 namespace RS\DiExtraBundle\Tests\Functional;
 
+use Functional\Bundles\Foo\Service\HoldService;
 use RS\DiExtraBundle\Tests\BaseKernelTestCase;
 use RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Data\Bar;
 use RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Form\CustomType;
-use RS\DiExtraBundle\Tests\Functional\Bundles\Validator\Foo;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class FormTest extends BaseKernelTestCase
@@ -14,8 +14,7 @@ class FormTest extends BaseKernelTestCase
         //arrange
         $data = new \stdClass();
         $data->foo = 'null';
-
-        $form = self::$container->get('form.factory')->createBuilder(FormType::class, $data)
+        $form = $this->container->get('form.factory')->createBuilder(FormType::class, $data)
             ->add('foo', CustomType::class)
             ->getForm();
 
@@ -33,7 +32,7 @@ class FormTest extends BaseKernelTestCase
         $bar = new Bar();
         $bar->foo = 'null';
 
-        $form = self::$container->get('form.factory')->createBuilder(FormType::class, $bar)
+        $form = $this->container->get('form.factory')->createBuilder(FormType::class, $bar)
             ->add('foo', CustomType::class)
             ->getForm();
 

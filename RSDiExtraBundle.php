@@ -2,7 +2,6 @@
 namespace RS\DiExtraBundle;
 
 use RS\DiExtraBundle\DependencyInjection\Compiler\AnnotationCompilerPass;
-use RS\DiExtraBundle\DependencyInjection\Compiler\ControllerInjectionCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

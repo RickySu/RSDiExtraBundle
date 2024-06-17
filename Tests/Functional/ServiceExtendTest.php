@@ -12,7 +12,7 @@ class ServiceExtendTest extends BaseKernelTestCase
         //arrange
 
         //act
-        $service = self::$container->get('extend_service');
+        $service = $this->container->get('extend_service');
 
         //assert
         $this->assertInstanceOf(FooPublicService::class, $service->fooPublicService);
@@ -24,7 +24,7 @@ class ServiceExtendTest extends BaseKernelTestCase
         //arrange
 
         //act
-        $service = self::$container->get('extend_service');
+        $service = $this->container->get('extend_service');
 
         //assert
         $this->assertInstanceOf(FooNotPublicService::class, $service->foo);
@@ -35,7 +35,7 @@ class ServiceExtendTest extends BaseKernelTestCase
         //arrange
 
         //act
-        $service = self::$container->get('extend_service');
+        $service = $this->container->get('extend_service');
 
         //assert
         $this->assertInstanceOf(FooNotPublicService::class, $service->foo2);
@@ -47,7 +47,7 @@ class ServiceExtendTest extends BaseKernelTestCase
         //arrange
 
         //act
-        $service = self::$container->get('extend_service');
+        $service = $this->container->get('extend_service');
 
         //assert
         $this->assertEquals('foo_static_factory', $service->fooStaticFactory->params['id']);

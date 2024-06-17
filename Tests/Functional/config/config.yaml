@@ -1,8 +1,11 @@
+imports:
+    - { resource: 'doctrine.yaml' }
+
 framework:
     test:            true
     secret:          test
     session:
-        storage_id:  session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
     router:
         resource:    "%kernel.project_dir%/Tests/Functional/config/routing.yaml"
 
@@ -13,23 +16,6 @@ rs_di_extra:
         exclude_directories:  foo,bar
         exclude_files:
             -         '*Test.php'
-
-doctrine:
-    dbal:
-        # configure these for your database server
-        driver: pdo_sqlite
-        path: 'sqlite::memory:'
-        charset: UTF8
-
-    orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
-        mappings:
-            FooBundle:
-                is_bundle: true
-                type: annotation
-
 parameters:
     foo:              bar
     kernel.debug:    true

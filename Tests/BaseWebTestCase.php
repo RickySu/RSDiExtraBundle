@@ -5,6 +5,7 @@ use RS\DiExtraBundle\Tests\Functional\AppKernel;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class BaseWebTestCase extends WebTestCase
 {
@@ -23,11 +24,11 @@ abstract class BaseWebTestCase extends WebTestCase
         $this->router = $this->client->getContainer()->get('router');
     }
 
-    protected static function createKernel(array $options = array())
+    protected static function createKernel(array $options = array()): KernelInterface
     {
         return new AppKernel(
-            isset($options['config']) ? $options['config'] : 'test',
-            isset($options['debug']) ? (bool) $options['debug'] : false
+            $options['config'] ?? 'test',
+            $options['debug'] ?? false
         );
     }
 }

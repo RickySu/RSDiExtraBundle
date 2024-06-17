@@ -5,26 +5,19 @@ namespace RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Repository\ProductRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- */
+
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $content;
 
     public function getId()

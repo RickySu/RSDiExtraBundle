@@ -28,7 +28,7 @@ class ObserveTest extends BaseKernelTestCase
     {
         //arrange
         $event = new CustomEvent();
-        $eventDispatcher = self::getContainer()->get('event_dispatcher');
+        $eventDispatcher = $this->container->get('event_dispatcher');
 
         //act
         $eventDispatcher->dispatch($event, 'null_event');
@@ -41,7 +41,7 @@ class ObserveTest extends BaseKernelTestCase
     {
         //arrange
         $event = new CustomEvent();
-        $eventDispatcher = self::getContainer()->get('event_dispatcher');
+        $eventDispatcher = $this->container->get('event_dispatcher');
 
         //act
         $eventDispatcher->dispatch($event, 'custom_event');

@@ -75,12 +75,10 @@ class DefinitionConverter
             return $definition;
         }
 
-        return $definition
-            ->setPrivate($classMeta->private)
+        $definition
             ->setPublic($classMeta->public)
             ->setShared($classMeta->shared)
             ->setAbstract($classMeta->abstract)
-            ->setDeprecated($classMeta->deprecated)
             ->setSynthetic($classMeta->synthetic)
             ->setTags($classMeta->tags)
             ->setFactory($classMeta->factoryMethod)
@@ -91,6 +89,10 @@ class DefinitionConverter
             ->setProperties($classMeta->properties)
             ->setDecoratedService($classMeta->decorates, $classMeta->decorationInnerName, $classMeta->decorationPriority)
             ;
+        if($classMeta->deprecated !== null){
+            $definition->setDeprecated(...$classMeta->deprecated);
+        }
+        return $definition;
     }
 
     protected function getReflectionClass($classFile)

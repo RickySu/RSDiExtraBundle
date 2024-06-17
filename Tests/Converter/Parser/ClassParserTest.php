@@ -336,7 +336,7 @@ class ClassParserTest extends BaseTestCase
         $reflectionClass
             ->expects($this->once())
             ->method('getParentClass')
-            ->willReturn(null);
+            ->willReturn(false);
 
         $classParser = $this->getMockBuilder(ClassParser::class)
             ->disableOriginalConstructor()

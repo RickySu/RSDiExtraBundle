@@ -25,7 +25,7 @@ class AppKernel extends Kernel
      *
      * @return iterable|BundleInterface[] An iterable of bundle instances
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new FrameworkBundle(),
@@ -44,7 +44,7 @@ class AppKernel extends Kernel
         $loader->load($this->config);
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/RSDiExtraBundle/'.substr(sha1($this->config), 0, 6);
     }

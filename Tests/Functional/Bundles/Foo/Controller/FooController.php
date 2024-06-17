@@ -6,11 +6,9 @@ use RS\DiExtraBundle\Annotation\InjectParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route("/foo")
- */
+#[Route("/foo")]
 class FooController extends AbstractController
 {
     use FooTrait;
@@ -80,9 +78,7 @@ class FooController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/bar")
-     */
+    #[Route("/bar")]
     public function barAction(Request $request)
     {
         return new Response(json_encode(array(

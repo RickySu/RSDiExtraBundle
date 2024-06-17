@@ -13,7 +13,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $files = self::getContainer()->getParameter('rs_di_extra.exclude_files');
+        $files = $this->container->getParameter('rs_di_extra.exclude_files');
 
         //assert
         $this->assertEquals(array(
@@ -25,7 +25,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $dirs = self::getContainer()->getParameter('rs_di_extra.exclude_directories');
+        $dirs = $this->container->getParameter('rs_di_extra.exclude_directories');
 
         //assert
         $this->assertEquals(array(
@@ -38,7 +38,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
 
         //assert
         $this->assertInstanceOf(FooPublicService::class, $service);
@@ -48,7 +48,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get(FooPublicService::class);
+        $service = $this->container->get(FooPublicService::class);
 
         //assert
         $this->assertInstanceOf(FooPublicService::class, $service);
@@ -58,10 +58,10 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
 
         //assert
-        $this->assertFalse(in_array('foo_not_public', self::getContainer()->getServiceIds()));
+        $this->assertFalse(in_array('foo_not_public', $this->container->getServiceIds()));
         $this->assertInstanceOf(FooNotPublicService::class, $service->fooNotPublicWithId);
     }
 
@@ -69,10 +69,10 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
 
         //assert
-        $this->assertFalse(in_array('foo_not_public', self::getContainer()->getServiceIds()));
+        $this->assertFalse(in_array('foo_not_public', $this->container->getServiceIds()));
         $this->assertInstanceOf(FooNotPublicService::class, $service->fooNotPublic);
     }
 
@@ -80,7 +80,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
         $result = $service->constructParams;
 
         //assert
@@ -93,7 +93,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
         $result = $service->injectParams;
 
         //assert
@@ -106,7 +106,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_static_factory');
+        $service = $this->container->get('foo_static_factory');
         $result = $service->params;
 
         //assert
@@ -121,7 +121,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_static_factory2');
+        $service = $this->container->get('foo_static_factory2');
         $result = $service->params;
 
         //assert
@@ -136,7 +136,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_static_factory3');
+        $service = $this->container->get('foo_static_factory3');
         $result = $service->params;
 
         //assert
@@ -151,7 +151,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_service_factory');
+        $service = $this->container->get('foo_service_factory');
         $result = $service->params;
 
         //assert
@@ -166,7 +166,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
         $ids = array_map(function($service){
             return $service->params['id'];
         }, $service->fooTagServices);
@@ -186,7 +186,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
         $ids = array_map(function($service){
             return $service->params['id'];
         }, $service->barTagServices);
@@ -205,7 +205,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get('foo_public');
+        $service = $this->container->get('foo_public');
         $tagServiceKeys = array_keys($service->indexByTagServices);
         sort($tagServiceKeys);
 
@@ -218,7 +218,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get(ServiceFactory::class);
+        $service = $this->container->get(ServiceFactory::class);
 
         //assert
         $this->assertInstanceOf(FooChildService::class, $service->fooChild);
@@ -228,7 +228,7 @@ class ServiceTest extends BaseKernelTestCase
     {
         //arrange
         //act
-        $service = self::getContainer()->get(FooTraitInjectService::class);
+        $service = $this->container->get(FooTraitInjectService::class);
 
         //assert
         $this->assertEquals(1, $service->injectFooStaticFactoryCounter);

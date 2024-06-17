@@ -1,7 +1,7 @@
 <?php
 namespace RS\DiExtraBundle\Tests\Functional;
 
-use Psr\Container\ContainerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use RS\DiExtraBundle\Tests\BaseKernelTestCase;
 use RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Entity\Product;
 
@@ -10,7 +10,7 @@ class DoctrineTest extends BaseKernelTestCase
     public function test_RepositoryInject()
     {
         //arrange
-        $doctrine = self::getContainer()->get('doctrine');
+        $doctrine = $this->container->get(EntityManagerInterface::class);
 
         //act
         $repository = $doctrine->getRepository(Product::class);
@@ -26,17 +26,4 @@ class DoctrineTest extends BaseKernelTestCase
             'foo_static_factory3',
         ), $ids);
     }
-
-    public function test_ContainerAwareInterface()
-    {
-        //arrange
-        $doctrine = self::getContainer()->get('doctrine');
-
-        //act
-        $repository = $doctrine->getRepository(Product::class);
-
-        //assert
-        $this->assertInstanceOf(ContainerInterface::class, $repository->container);
-    }
-
 }

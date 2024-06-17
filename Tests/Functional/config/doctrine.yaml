@@ -1,0 +1,12 @@
+doctrine:
+    dbal:
+        # configure these for your database server
+        driver: pdo_sqlite
+        path: 'sqlite::memory:'
+        charset: UTF8
+    orm:
+        auto_generate_proxy_classes: true
+        mappings:
+            FooBundle:
+                prefix: RS\DiExtraBundle\Tests\Functional\Bundles\Foo\Entity
+

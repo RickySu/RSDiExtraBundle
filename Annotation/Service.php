@@ -25,8 +25,8 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
     /** @var bool */
     public $shared = true;
 
-    /** @var bool */
-    public $deprecated = false;
+    /** @var null | array */
+    public $deprecated = null;
 
     /** @var string */
     public $decorates;
