@@ -18,10 +18,16 @@ class FooController extends AbstractController
      */
     protected $fooStaticFactory;
 
+    #[Inject]
+    protected $fooStaticAttributeFactory;
+
     /**
      * @Inject("foo_static_factory2")
      */
     protected $fooStaticFactory2;
+
+    #[Inject("foo_static_attribute_factory2")]
+    protected $fooStaticAttributeFactory2;
 
     public $injectParams;
     public $injectParams1;
@@ -45,13 +51,8 @@ class FooController extends AbstractController
         );
     }
 
-    /**
-     * @param $fooStaticFactory3
-     * @param $foo
-     * @InjectParams({
-     *     "foo" = @Inject("%foo%"),
-     * })
-     */
+    #[InjectParams]
+    #[Inject(name: 'foo', value: '%foo%')]
     public function injectParams($fooStaticFactory3, $foo)
     {
         $this->injectParams = array(
@@ -59,7 +60,6 @@ class FooController extends AbstractController
             'foo' => $foo,
         );
     }
-
 
     /**
      * @param $fooStaticFactory3

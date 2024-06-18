@@ -8,7 +8,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  * @Annotation
  * @Target({"CLASS", "METHOD"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class Tag implements ClassProcessorInterface, MethodProcessorInterface
 {
     /** @var string @Required */

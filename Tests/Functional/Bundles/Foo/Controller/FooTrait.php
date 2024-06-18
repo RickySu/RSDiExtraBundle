@@ -6,8 +6,6 @@ use RS\DiExtraBundle\Annotation\Inject;
 
 trait FooTrait
 {
-    /**
-     * @Inject("%foo%")
-     */
+    #[Inject("%foo%")]
     protected $fooFromTrait;
 }

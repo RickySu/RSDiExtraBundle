@@ -174,9 +174,12 @@ class ServiceAttributeTest extends BaseKernelTestCase
         sort($ids);
 
         //assert
-        $this->assertCount(4, $ids);
+        $this->assertCount(7, $ids);
         $this->assertEquals(array(
             'foo_service_factory',
+            'foo_static_attribute_factory',
+            'foo_static_attribute_factory2',
+            'foo_static_attribute_factory3',
             'foo_static_factory',
             'foo_static_factory2',
             'foo_static_factory3'
@@ -194,9 +197,11 @@ class ServiceAttributeTest extends BaseKernelTestCase
         sort($ids);
 
         //assert
-        $this->assertCount(3, $ids);
+        $this->assertCount(5, $ids);
         $this->assertEquals(array(
             'foo_not_public',
+            'foo_static_attribute_factory',
+            'foo_static_attribute_factory2',
             'foo_static_factory',
             'foo_static_factory2',
         ), $ids);
