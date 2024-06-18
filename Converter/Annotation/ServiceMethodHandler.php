@@ -22,7 +22,6 @@ class ServiceMethodHandler
         $factoryClassMeta->parent = $annotation->parent;
         $factoryClassMeta->shared = $annotation->shared;
         $factoryClassMeta->public = $annotation->public;
-        $factoryClassMeta->private = $annotation->private;
         $factoryClassMeta->decorates = $annotation->decorates;
         $factoryClassMeta->decorationInnerName = $annotation->decorationInnerName;
         $factoryClassMeta->decorationPriority = $annotation->decorationPriority;

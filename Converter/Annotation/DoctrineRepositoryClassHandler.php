@@ -24,7 +24,6 @@ class DoctrineRepositoryClassHandler
 
         if($classMeta->id === null) {
             $serviceAnnotation = new Service();
-            $serviceAnnotation->private = true;
             $serviceAnnotation->autowire = true;
             (new ServiceClassHandler())->handle($classMeta, $reflectionClass, $serviceAnnotation);
         }

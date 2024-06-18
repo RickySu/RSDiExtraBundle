@@ -64,15 +64,28 @@ class ClassParser
         $this->parseParent($classMeta);
         $this->parseTraits($classMeta);
 
-        foreach($this->annotationReader->getClassAnnotations($this->reflectionClass) as $annotation){
-            if($annotation instanceof ClassProcessorInterface){
-                $classMeta->class = $this->reflectionClass->getName();
-                $annotation->handleClass($classMeta, $this->reflectionClass);
-            }
+        foreach($this->getClassAnnotation() as $annotation) {
+            $classMeta->class = $this->reflectionClass->getName();
+            $annotation->handleClass($classMeta, $this->reflectionClass);
         }
 
         if($classMeta->class !== null && $classMeta->id === null){
             $classMeta->id = $classMeta->class;
+        }
+    }
+
+    protected function getClassAnnotation(): iterable
+    {
+        foreach ($this->annotationReader->getClassAnnotations($this->reflectionClass) as $annotation) {
+            if($annotation instanceof ClassProcessorInterface){
+                yield $annotation;
+            }
+        }
+        foreach ($this->reflectionClass->getAttributes() as $attribute) {
+            $annotation = $attribute->newInstance();
+            if($annotation instanceof ClassProcessorInterface){
+                yield $annotation;
+            }
         }
     }
 

@@ -7,6 +7,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  * @Annotation
  * @Target("CLASS")
  */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 final class FormType implements ClassProcessorInterface
 {
     public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)

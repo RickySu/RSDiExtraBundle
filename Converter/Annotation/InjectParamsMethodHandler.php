@@ -3,12 +3,7 @@ namespace RS\DiExtraBundle\Converter\Annotation;
 
 
 use RS\DiExtraBundle\Annotation\InjectParams;
-use RS\DiExtraBundle\Annotation\Service;
 use RS\DiExtraBundle\Converter\ClassMeta;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Reference;
 
 class InjectParamsMethodHandler
 {
@@ -54,7 +49,7 @@ class InjectParamsMethodHandler
     {
         $annotationArguments = array();
 
-        foreach ($annotation->params as $paramName => $injectOption){
+        foreach ($annotation->params as $paramName => $injectOption) {
             $annotationArguments[$paramName] = $this->parameterGuesser->guessAnnotationArgument($injectOption->value, $injectOption->required);
         }
 

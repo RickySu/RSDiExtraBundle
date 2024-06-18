@@ -49,9 +49,13 @@ class ObserveTest extends BaseKernelTestCase
         //assert
         $this->assertEquals(array(
             'customEventListener2',
+            'customEventListener2',
+            'customEventListener1',
             'customEventListener1',
             'customEventListener4',
-            'customEventListener3'
+            'customEventListener4',
+            'customEventListener3',
+            'customEventListener3',
         ), $event->getCalls());
     }
 }

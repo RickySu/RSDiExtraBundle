@@ -24,11 +24,24 @@ class PropertyParser
      */
     public function parse(ClassMeta $classMeta)
     {
-        foreach ($this->annotationReader->getPropertyAnnotations($this->reflectionProperty) as $annotation){
-            if($annotation instanceof PropertyProcessorInterface){
-                $annotation->handleProperty($classMeta, $this->reflectionProperty);
-            }
+        foreach ($this->getPropertyAnnotation() as $annotation) {
+            $annotation->handleProperty($classMeta, $this->reflectionProperty);
         }
     }
 
+    protected function getPropertyAnnotation(): iterable
+    {
+        foreach ($this->annotationReader->getPropertyAnnotations($this->reflectionProperty) as $annotation) {
+            if($annotation instanceof PropertyProcessorInterface){
+                yield $annotation;
+            }
+        }
+
+        foreach ($this->reflectionProperty->getAttributes() as $attribute) {
+            $annotation = $attribute->newInstance();
+            if($annotation instanceof PropertyProcessorInterface){
+                yield $annotation;
+            }
+        }
+    }
 }

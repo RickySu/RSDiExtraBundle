@@ -30,7 +30,6 @@ class ServiceClassHandlerTest extends BaseTestCase
         $service->id = 'id';
         $service->parent = 'parent';
         $service->public = true;
-        $service->private = true;
         $service->shared = true;
         $service->deprecated = true;
         $service->decorates = 'devorates';
@@ -54,7 +53,6 @@ class ServiceClassHandlerTest extends BaseTestCase
         $this->assertEquals($service->id, $classMeta->id);
         $this->assertEquals($service->parent, $classMeta->parent);
         $this->assertEquals($service->public, $classMeta->public);
-        $this->assertEquals($service->private, $classMeta->private);
         $this->assertEquals($service->shared, $classMeta->shared);
         $this->assertEquals($service->deprecated, $classMeta->deprecated);
         $this->assertEquals($service->decorates, $classMeta->decorates);

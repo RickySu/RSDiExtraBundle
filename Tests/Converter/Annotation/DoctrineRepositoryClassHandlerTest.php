@@ -27,7 +27,6 @@ class DoctrineRepositoryClassHandlerTest extends BaseTestCase
         $doctrineRepositoryHandler->handle($classMeta, new \ReflectionClass($this), $doctrineRepository);
 
         //assert
-        $this->assertTrue($classMeta->private);
         $this->assertTrue($classMeta->autowire);
         $this->assertEquals(self::class, $classMeta->id);
         $this->assertEquals(array(
@@ -51,7 +50,6 @@ class DoctrineRepositoryClassHandlerTest extends BaseTestCase
         $doctrineRepositoryHandler->handle($classMeta, new \ReflectionClass($repository), $doctrineRepository);
 
         //assert
-        $this->assertTrue($classMeta->private);
         $this->assertTrue($classMeta->autowire);
         $this->assertEquals(self::class, $classMeta->id);
         $this->assertEquals(array(

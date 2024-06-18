@@ -7,6 +7,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  * @Annotation
  * @Target("METHOD")
  */
+#[\Attribute(\Attribute::TARGET_METHOD)]
 final class InjectParams implements MethodProcessorInterface
 {
     /** @var array<RS\DiExtraBundle\Annotation\Inject> */

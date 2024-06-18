@@ -64,7 +64,6 @@ class ServiceMethodHandlerTest extends BaseTestCase
         $service->id = 'id';
         $service->parent = 'parent';
         $service->public = true;
-        $service->private = true;
         $service->shared = true;
         $service->deprecated = true;
         $service->decorates = 'devorates';
@@ -88,7 +87,6 @@ class ServiceMethodHandlerTest extends BaseTestCase
         $this->assertEquals($service->id, $classMeta->nextClassMeta->id);
         $this->assertEquals($service->parent, $classMeta->nextClassMeta->parent);
         $this->assertEquals($service->public, $classMeta->nextClassMeta->public);
-        $this->assertEquals($service->private, $classMeta->nextClassMeta->private);
         $this->assertEquals($service->shared, $classMeta->nextClassMeta->shared);
         $this->assertEquals($service->deprecated, $classMeta->nextClassMeta->deprecated);
         $this->assertEquals($service->decorates, $classMeta->nextClassMeta->decorates);
@@ -110,7 +108,6 @@ class ServiceMethodHandlerTest extends BaseTestCase
         $service->id = 'id';
         $service->parent = 'parent';
         $service->public = true;
-        $service->private = true;
         $service->shared = true;
         $service->deprecated = true;
         $service->decorates = 'devorates';
@@ -135,7 +132,6 @@ class ServiceMethodHandlerTest extends BaseTestCase
         $this->assertEquals($service->id, $classMeta->nextClassMeta->id);
         $this->assertEquals($service->parent, $classMeta->nextClassMeta->parent);
         $this->assertEquals($service->public, $classMeta->nextClassMeta->public);
-        $this->assertEquals($service->private, $classMeta->nextClassMeta->private);
         $this->assertEquals($service->shared, $classMeta->nextClassMeta->shared);
         $this->assertEquals($service->deprecated, $classMeta->nextClassMeta->deprecated);
         $this->assertEquals($service->decorates, $classMeta->nextClassMeta->decorates);

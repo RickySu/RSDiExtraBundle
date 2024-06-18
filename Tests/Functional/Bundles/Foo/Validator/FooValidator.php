@@ -18,7 +18,7 @@ class FooValidator extends ConstraintValidator
 
     /**
      * @InjectParams({
-     *     "foo" = @Inject("%foo%")
+     *     "foo" = @Inject("%foo%", required=true)
      * })
      */
     public function inject($foo)

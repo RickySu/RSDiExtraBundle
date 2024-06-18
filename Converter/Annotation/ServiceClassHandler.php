@@ -18,7 +18,6 @@ class ServiceClassHandler
         $classMeta->parent = $annotation->parent;
         $classMeta->shared = $annotation->shared;
         $classMeta->public = $annotation->public;
-        $classMeta->private = $annotation->private;
         $classMeta->decorates = $annotation->decorates;
         $classMeta->decorationInnerName = $annotation->decorationInnerName;
         $classMeta->decorationPriority = $annotation->decorationPriority;
