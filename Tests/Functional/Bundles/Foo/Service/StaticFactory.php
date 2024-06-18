@@ -11,7 +11,7 @@ class StaticFactory
 {
     /**
      * @Tag("tag_index_by", attributes={"index": "foo_static"})
-     * @Tag(name="foo_tag")
+     * @Tag("foo_tag")
      * @Tag(name="foo_tag", attributes={"a": "a"})
      * @Service("foo_static_factory", class=\stdClass::class)
      * @Tag(name="bar_tag")

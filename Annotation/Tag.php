@@ -8,6 +8,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
  * @Annotation
  * @Target({"CLASS", "METHOD"})
  */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final class Tag implements ClassProcessorInterface, MethodProcessorInterface
 {
     /** @var string @Required */
@@ -15,6 +16,17 @@ final class Tag implements ClassProcessorInterface, MethodProcessorInterface
 
     /** @var array */
     public $attributes = array();
+
+    public function __construct($name = null, $attributes = array())
+    {
+        if(is_array($name)) {
+            $this->name = $name['name']??$name['value']??null;
+            $this->attributes = $name['attributes'] ?? array();
+            return;
+        }
+        $this->name = $name;
+        $this->attributes = $attributes;
+    }
 
     public function handleClass(ClassMeta $classMeta, \ReflectionClass $reflectionClass)
     {

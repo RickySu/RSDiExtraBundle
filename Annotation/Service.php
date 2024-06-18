@@ -74,8 +74,8 @@ final class Service implements ClassProcessorInterface, MethodProcessorInterface
         $class = null
     )
     {
-        if(is_array($id) && isset($id['value'])) {
-            $this->id = $id['value']??null;
+        if(is_array($id)) {
+            $this->id = $id['id']??$id['value']??null;
             $this->parent = $id['parent']??null;
             $this->public = $id['public']??true;
             $this->shared = $id['shared']??true;

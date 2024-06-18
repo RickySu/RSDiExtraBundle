@@ -18,7 +18,6 @@ class TagMethodHandler
         if(!isset($classMeta->factoryTags[$factoryMethodName])){
             $classMeta->factoryTags[$factoryMethodName] = array();
         }
-
         if(!isset($classMeta->factoryTags[$factoryMethodName][$annotation->name])){
             $classMeta->factoryTags[$factoryMethodName][$annotation->name] = array();
         }

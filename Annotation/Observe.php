@@ -18,8 +18,8 @@ final class Observe implements MethodProcessorInterface
 
     public function __construct($event = null, $priority = 0)
     {
-        if(is_array($event) && isset($event['value'])) {
-            $this->event = $event['value'];
+        if(is_array($event)) {
+            $this->event = $event['event']??$event['value']??null;
             $this->priority = $event['priority']??false;
             return;
         }

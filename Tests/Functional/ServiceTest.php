@@ -224,6 +224,9 @@ class ServiceTest extends BaseKernelTestCase
         $this->assertInstanceOf(FooChildService::class, $service->fooChild);
     }
 
+    /**
+     * @group debug
+     */
     public function test_tait_inject_twice()
     {
         //arrange
