@@ -7,6 +7,7 @@ use RS\DiExtraBundle\Converter\ClassMeta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class ClassParser
 {
@@ -58,7 +59,8 @@ class ClassParser
         if($classMeta->class === null && $this->isController($this->reflectionClass)){
             $classMeta->class = $this->reflectionClass->getName();
             $classMeta->isController = true;
-            $classMeta->methodCalls[] = array('setContainer', array(new Reference('service_container', ContainerInterface::NULL_ON_INVALID_REFERENCE)));
+            $serviceId = $this->reflectionClass->isSubclassOf(ServiceSubscriberInterface::class) ? 'controller_service_locator' : 'service_container';
+            $classMeta->methodCalls[] = array('setContainer', array(new Reference($serviceId, ContainerInterface::NULL_ON_INVALID_REFERENCE)));
         }
 
         $this->parseParent($classMeta);

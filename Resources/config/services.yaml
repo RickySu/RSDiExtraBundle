@@ -7,3 +7,13 @@ services:
                 arguments:
                     -          '%kernel.environment%'
                     -          '%kernel.cache_dir%'
+
+    RS\DiExtraBundle\ServiceLocator\ControllerServiceLocatorFactory:
+        tags:  ['container.service_subscriber']
+        public:  false
+        autowire: true
+
+    controller_service_locator:
+        class:   Psr\Container\ContainerInterface
+        public:  false
+        factory: ['@RS\DiExtraBundle\ServiceLocator\ControllerServiceLocatorFactory', 'getContainer']
